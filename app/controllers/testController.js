@@ -8,3 +8,15 @@ exports.index = async ( req, res ) => {
         res.status(500).send({ message: err.message });
     }
 };
+
+exports.create = async ( req, res ) => {
+    try {
+        const data = await TestModel.query().insert({
+            name: req.body.name
+        });
+        res.send({ data });
+    } catch(err) {
+        res.status(500).send({ message: err.message });
+    }
+};
+

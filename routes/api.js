@@ -4,10 +4,10 @@ const cors     = require('cors'),
 
 require('../app/models');
 const app = require('express').Router();
-app.use( bodyParser.json() );
 app.use(cors({
     exposedHeaders: ['x-warning']
 }));
+app.use( bodyParser.json() );
 bodyParser.urlencoded({ extended: true });
 const controller = path => require('../app/controllers/' + path);
 
@@ -25,6 +25,7 @@ app.use(require('../app/middlewares/authentication')(config.app.key));
 
 // routes requiring authentication token
 app.get('/test', test.index );
+app.post('/test', test.create );
 
 app.all('*', (req, res) => {
     res.status(404).send({ message: 'The route you are looking is not found.' });

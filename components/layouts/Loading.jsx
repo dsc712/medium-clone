@@ -8,13 +8,12 @@ class Loading extends React.Component {
         justifyContent: 'center',
         height: '100%',
         minHeight: 300,
-        flexDirection: 'column'
     };
 
     render() {
         if(this.props.isLoading) {
             return (
-                <div style={{ ...this.style }}> <Spin size="large"/> Loading stories for you...</div>
+                <div style={{ ...this.style }}> <Spin size="large"/> </div>
             )
         }
         if(this.props.error) {

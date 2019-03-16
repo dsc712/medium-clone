@@ -8,7 +8,7 @@ class App extends Component {
     componentDidMount() {
         setTimeout( () => {
             this.setState({ isLoading: false })
-        }, 3000);
+        }, 1000);
     }
 
     state = {
@@ -19,9 +19,12 @@ class App extends Component {
         return (
             <Loading isLoading={ this.state.isLoading }>
                 <Layout>
-                        <Header>
+                        <Header style={{ position: 'fixed', zIndex: 1, width: '100%'}}>
                            <Navbar />
                         </Header>
+                        <Content style={{ "margin": "100px auto", "minHeight": "100vh" }}>
+                            { this.props.children }
+                        </Content>
                 </Layout>
             </Loading>
         )

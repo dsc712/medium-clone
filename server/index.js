@@ -17,6 +17,10 @@ app.prepare()
         const server = express();
 
         server.use('/api', routes.api);
+        server.use(cors({
+            exposedHeaders: ['x-warning']
+        }));
+        server.use( bodyParser.json());
         routes.web(server, app);
 
         server.listen(config.port, (err) => {
@@ -26,5 +30,5 @@ app.prepare()
     })
     .catch((ex) => {
         console.error(ex.stack);
-        process.exit(1)
+        process.exit(1);
     });
