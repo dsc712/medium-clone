@@ -15,6 +15,7 @@ const controller = path => require('../app/controllers/' + path);
 const test = controller('testController');
 const registration = controller('auth/registerController');
 const login = controller('auth/loginController');
+const profile = controller('profileController');
 
 // routes without authentication
 // auth routes
@@ -26,6 +27,7 @@ app.use(require('../app/middlewares/authentication')(config.app.key));
 // routes requiring authentication token
 app.get('/test', test.index );
 app.post('/test', test.create );
+app.get('/me', profile.me );
 
 app.all('*', (req, res) => {
     res.status(404).send({ message: 'The route you are looking is not found.' });

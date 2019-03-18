@@ -6,13 +6,14 @@ import '../libs/cookie';
 import cookie from 'js-cookie';
 import NProgress from 'nprogress'
 import Router from 'next/router'
+import { Provider, connect } from 'react-redux';
+import store from '../store';
 import { message } from 'antd';
 
 import '../components/layouts/app.css'
 import 'nprogress/nprogress.css';
 
 
-console.log(process.env.API_HOST);
 axios.defaults.baseURL = 'http://127.0.0.1:3001/api/';
 
 axios.interceptors.request.use(
@@ -78,6 +79,7 @@ class MyApp extends App {
     render() {
         const { Component, pageProps } = this.props;
         return (
+            <Provider store={store}>
                 <Container>
                     <Head>
                         <link rel="icon" href="https://cdn-images-1.medium.com/max/1600/1*emiGsBgJu2KHWyjluhKXQw.png" type="image/png" sizes="256x256" />
@@ -86,6 +88,7 @@ class MyApp extends App {
                     </Head>
                     <Component {...pageProps} />
                 </Container>
+            </Provider>
         );
     }
 }

@@ -1,34 +1,103 @@
 import react, { Component } from 'react';
-import { Layout } from 'antd';
-const { Header, Content } = Layout;
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
+import { withRouter } from 'next/router';
+import { Layout, Icon, Dropdown, Menu, Button } from 'antd';
+import axios from 'axios';
+const { Header, Content, Footer } = Layout;
 import Loading from './Loading.jsx';
-import Navbar from './Navbar.jsx';
 import './app.css';
+
+let isAuthenticated = false;
+
 class App extends Component {
-    componentDidMount() {
-        setTimeout( () => {
-            this.setState({ isLoading: false })
-        }, 1000);
-    }
 
     state = {
-        isLoading: true
+        usr: ''
     };
+
+    constructor( props ) {
+        super(props);
+    }
+
+    logout = e => {
+        this.props.dispatch(actions.auth.logout());
+    };
+
+    menu = () => (
+        <Menu>
+            <Menu.Item key="1" onClick={e => this.props.router.push('/settings/account')}><Icon type="user" />Profile</Menu.Item>
+            <Menu.Item key="3" onClick={ this.logout }><Icon type="logout" /> Logout</Menu.Item>
+        </Menu>
+    );
+
+    async authenticate() {
+        this.setState({ isAuthenticating: true });
+        try {
+            const data  = await axios.get('/me');
+            const user = data.data;
+            this.props.dispatch(actions.auth.login({ user }));
+            isAuthenticated = true;
+        } catch(err) {
+            if(err.response && err.response.status === 401) {
+                isAuthenticated = false;
+                this.props.router.push({ pathname: '/login' });
+            }
+            // throw err;
+        }
+        this.setState({ isAuthenticating: false })
+    }
+
+    componentWillMount() {
+        if(!isAuthenticated) {
+            this.authenticate();
+        }
+    }
+
+    componentWillUnmount() {
+    }
+
+    componentDidMount() {
+     }
+
+    shouldComponentUpdate(props) {
+        if(isAuthenticated && !props.auth.check) {
+            isAuthenticated = false;
+            this.props.router.push({ pathname: '/login' });
+            return false;
+        }
+        return true;
+    }
+
 
     render() {
         return (
-            <Loading isLoading={ this.state.isLoading }>
+            <Loading isLoading={ this.state.isAuthenticating }>
                 <Layout>
-                        <Header style={{ position: 'fixed', zIndex: 1, width: '100%'}}>
-                           <Navbar />
+                        <Header style={{ display: "flex", color:"#fff", justifyContent: "space-between", position: 'fixed', zIndex: 1, width: '100%'}}>
+                            {/*<div style={{ "display": "flex", "color":"#fff", "justifyContent": "space-between" }}>*/}
+                                <b><Icon style={{"fontSize": "32px" }} type="medium"/></b>
+                            { isAuthenticated ? <Dropdown  overlay={this.menu() }>
+                                <Button style={{ marginTop: "15px"}}>
+                                    { this.props.auth.user.name  } <Icon type="logout" />
+                                </Button>
+                            </Dropdown>: ''} 
+                            {/*</div>*/}
                         </Header>
                         <Content style={{ "margin": "100px auto", "minHeight": "100vh" }}>
                             { this.props.children }
                         </Content>
+                        <Footer style={{ textAlign: 'center', fontSize: '20px' }}>
+                            Medium Clone ©2019
+                            Made with <Icon type="heart" />
+                        </Footer>
                 </Layout>
             </Loading>
         )
     }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({ dispatch });
+const mapStateToProps = ({ auth, app }) => ({ auth, app });
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));
