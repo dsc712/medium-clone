@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import { withRouter } from 'next/router';
 import { Layout, Icon, Dropdown, Menu, Button } from 'antd';
+import Link from 'next/link';
 import axios from 'axios';
 const { Header, Content, Footer } = Layout;
 import Loading from './Loading.jsx';
@@ -75,14 +76,12 @@ class App extends Component {
             <Loading isLoading={ this.state.isAuthenticating }>
                 <Layout>
                         <Header style={{ display: "flex", color:"#fff", justifyContent: "space-between", position: 'fixed', zIndex: 1, width: '100%'}}>
-                            {/*<div style={{ "display": "flex", "color":"#fff", "justifyContent": "space-between" }}>*/}
-                                <b><Icon style={{"fontSize": "32px" }} type="medium"/></b>
+                            <Link href={"/"}><b><Icon style={{"fontSize": "32px", "cursor": "pointer" }} type="medium"/></b></Link>
                             { isAuthenticated ? <Dropdown  overlay={this.menu() }>
                                 <Button style={{ marginTop: "15px"}}>
                                     { this.props.auth.user.name  } <Icon type="logout" />
                                 </Button>
                             </Dropdown>: ''} 
-                            {/*</div>*/}
                         </Header>
                         <Content style={{ "margin": "100px auto", "minHeight": "100vh" }}>
                             { this.props.children }
