@@ -9,7 +9,8 @@ import axios from 'axios';
 
 class Login extends Component {
     state = {
-        error: ''
+        error: '',
+        isChecking: false
     };
 
     componentDidMount() {
@@ -28,6 +29,7 @@ class Login extends Component {
 
     async sendRequest(values) {
 
+        this.setState({ isChecking: true });
         try	{
             const { data } = await axios.post('/login', values );
             cookie.session(data.token);
@@ -39,6 +41,7 @@ class Login extends Component {
                 this.setState({ error: err.message });
             }
         }
+        this.setState({ isChecking: false });
     }
 
     render() {
@@ -46,8 +49,14 @@ class Login extends Component {
         return (
             <App style={{ "height": "100vh"}}>
                 <Card style={{ "padding": "10px 30px", }}>
+                    <div style={{"marginBottom": "10px"}}>
+                        { this.state.error && <Alert
+                            description={ this.state.error }
+                            type="error"
+                        />
+                        }</div>
                     <Form style={{ width: 400 }} onSubmit={ this.handleSubmit }>
-                        <Item label={"Email"}>
+                        <Item style={{ width: 400 }} label={"Email"}>
                             {
                                 decorator('email', {
                                     rules: [{ required: true, message: 'Please enter your email'}]
@@ -56,7 +65,7 @@ class Login extends Component {
                                 )
                             }
                         </Item>
-                        <Item label={"Password"}>
+                        <Item style={{ width: 400 }} label={"Password"}>
                             {
                                 decorator('password', {
                                     rules: [{ required: true, message: 'Please enter your password'}]
@@ -65,17 +74,10 @@ class Login extends Component {
                                 )
                             }
                         </Item>
-                        <div style={{"display": "flex", "justifyContent": "space-between"}}>
-                            <Button type="primary" htmlType="submit">Login</Button>
+                        <Button loading={ this.state.isChecking } type="primary" htmlType="submit" block>Login</Button>
+                        <div style={{ "margin": "25px auto" }}>
                             <Link href="/register"><a>Create new account</a></Link>
                         </div>
-                        <div style={{"marginTop": "10px"}}>
-                            { this.state.error && <Alert
-                                description={ this.state.error }
-                                type="error"
-                            />
-                            }</div>
-
                     </Form>
                 </Card>
             </App>
