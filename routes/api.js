@@ -22,6 +22,8 @@ const profile = controller('profileController');
 app.post('/register', registration.register );
 app.post('/login', login.login );
 
+app.get('/users', test.getUser);
+
 app.use(require('../app/middlewares/authentication')(config.app.key));
 
 // routes requiring authentication token

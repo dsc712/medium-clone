@@ -1,4 +1,5 @@
 const TestModel  = require('../models/TestModel');
+const UserModel  = require('../models/User');
 
 exports.index = async ( req, res ) => {
     try {
@@ -20,3 +21,13 @@ exports.create = async ( req, res ) => {
     }
 };
 
+exports.getUser=async (req,res)=>{
+    try{
+        const user=await UserModel.query();
+        // console.log(user)
+        res.send({data:user});
+
+    }catch(err){
+        res.status(500).send({data:err.message});
+    }
+}

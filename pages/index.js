@@ -19,15 +19,13 @@ class Index extends Component {
             return <Card key={i} style={{ width: 1000, marginTop: 16 }} loading={this.state.loading}>
                 <Meta
                     avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                    title="Story"
+                    title="Title of the Story"
                     description="This is the description"
                 />
                 <Divider/>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Accusamus commodi, cumque id impedit incidunt ipsa ipsam
-                    nemo neque nesciunt officiis omnis pariatur quas quibusdam
-                    reiciendis repellendus unde veniam voluptas voluptate
+                   This is the story of a man in the woods working over the power hungry
+                    robot that he made after learning AI in iiitd which can also be some shitty behave so...
                 </p>
             </Card>
         });
