@@ -1,6 +1,7 @@
 import react, {Component} from 'react';
 import App from '../components/layouts/App';
 import "./register.css"
+import Link from 'next/link';
 
 const emailRegex = RegExp(
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -130,7 +131,7 @@ class Register extends Component {
                         <div className="createAccount">
                             <button type="submit" >Create Account</button>
                             <small >
-                                <a href="/login">Already Have an Account?</a></small>
+                                <Link href="/login">Already Have an Account?</Link></small>
                         </div>
                     </form>
 
