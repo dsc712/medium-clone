@@ -2,7 +2,7 @@ import react, { Component } from "react";
 import App from "../components/layouts/App";
 import { Card, Avatar, Divider } from "antd";
 const { Meta } = Card;
-class Index extends Component {
+class Index extends Component { 
   state = {
     loading: true,
     stories: ["Story 1", "Story 2", "Story 3", "Story 4", "Story 5"]

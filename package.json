@@ -33,6 +33,7 @@
     "objection": "^1.6.3",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-infinite-scroll-component": "^4.5.2",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "validator": "^10.11.0"
