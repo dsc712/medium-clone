@@ -30,6 +30,7 @@ app.use(require('../app/middlewares/authentication')(config.app.key));
 app.get('/test', test.index );
 app.post('/test', test.create );
 app.get('/me', profile.me );
+app.put('/me/:user', profile.update );
 
 app.all('*', (req, res) => {
     res.status(404).send({ message: 'The route you are looking is not found.' });
