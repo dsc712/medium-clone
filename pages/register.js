@@ -1,146 +1,136 @@
 import react, {Component} from 'react';
-import App from '../components/layouts/App';
-import "./register.css"
+import cookie from 'js-cookie';
+import {Form, Input, Icon, Card, Button, Head, Alert, message} from 'antd';
 import Link from 'next/link';
+import { withRouter } from "next/router";
+import axios from 'axios';
+import "../components/layouts/register.css"
 
-const emailRegex = RegExp(
-    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-);
+const Item = Form.Item;
 
-const formValid = ({ formErrors, ...rest }) => {
-    let valid = true;
-
-    // validate form errors being empty
-    Object.values(formErrors).forEach(val => {
-        val.length > 0 && (valid = false);
-    });
-
-    // validate the form was filled out
-    Object.values(rest).forEach(val => {
-        val === null && (valid = false);
-    });
-
-    return valid;
-};
 
 class Register extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: "",
-            email: "",
-            password: "",
-            formErrors: {
-                name: "",
-                email: "",
-                password: ""
-            }
-        };
-    }
-
-    handleSubmit = e => {
-        e.preventDefault();
-
-        if (formValid(this.state)) {
-            console.log(`
-        --SUBMITTING--
-        First Name: ${this.state.firstName}
-        Last Name: ${this.state.lastName}
-        Email: ${this.state.email}
-        Password: ${this.state.password}
-      `);
-        } else {
-            console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-        }
+    state = {
+        name: "",
+        email: "",
+        password: "",
+        error: ""
     };
 
-    handleChange = e => {
+    handleSubmit = e => {
+        console.log("ash submitting")
         e.preventDefault();
-        let formErrors = {...this.state.formErrors};
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            this.sendRequest(values);
+        });
+    };
 
-        switch (name) {
-            case "name":
-                formErrors.name =
-                    value.length < 3 ? "minimum 3 characaters required" : "";
-                break;
+    async sendRequest(values) {
+        try {
+            const {data} = await axios.post("/register", values);
+            cookie.session(data.token);
+            message.success("You have been Successfully Registered!! ")
+            this.props.router.push("/");
 
-            case "email":
-                formErrors.email = emailRegex.test(value)
-                    ? ""
-                    : "invalid email address";
-                break;
-            case "password":
-                formErrors.password =
-                    value.length < 4 ? "minimum 4 characaters required" : "";
-                break;
-            default:
-                break;
+        } catch (err) {
+            if (err.response) {
+                this.setState({error: err.response.data.message});
+            } else {
+                this.setState({error: err.message});
+            }
         }
-
-        this.setState({formErrors:formErrors});
-
     }
 
     render() {
+
+        console.log(this.props.form);
+        const decorator = this.props.form.getFieldDecorator;
         return (
             <div className={"wrapper"}>
 
                 <div className={"form-wrapper"}>
-                    <form onSubmit={this.handleSubmit} noValidate>
 
-                        <h1> Create Account</h1>
-                        <div className={"name"}>
-                            <label htmlFor="name">First Name</label>
-                            <input
-                                className={this.state.formErrors.name.length > 0 ? "error" : null}
-                                placeholder=" Name"
-                                type="text"
-                                name="name"
-                                noValidate
-                                onChange={this.handleChange}
-                            />
-                            {this.state.formErrors.name.length > 0 && (
-                                <span className="errorMessage">{this.state.formErrors.name}</span>
-                            )}
-                        </div>
-                        <div className="email">
-                            <label htmlFor="eamil">Email</label>
-                            <input
-                                className={this.state.formErrors.email.length > 0 ? "error" : null}
-                                type="email"
-                                name="email"
-                                onChange={this.handleChange}
-                                placeholder="Email"/>
-                            {this.state.formErrors.email.length > 0 && (
-                                <span className="errorMessage">{this.state.formErrors.email}</span>
-                            )}
-                        </div>
+                    <h1> Create Account</h1>
+                    <div style={{"marginBottom": "10px"}}>
+                        {this.state.error && <Alert
+                            description={this.state.error}
+                            type="error"
+                        />
+                        }</div>
 
-                        <div className="password">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                className={this.state.formErrors.password.length > 0 ? "error" : null}
-                                type="password"
-                                name="password"
-                                onChange={this.handleChange}
-                                placeholder="Password"/>
-                            {this.state.formErrors.password.length > 0 && (
-                                <span className="errorMessage">{this.state.formErrors.password}</span>
-                            )}
-                        </div>
-                        <div className="createAccount">
-                            <button type="submit" >Create Account</button>
-                            <small >
-                                <Link href="/login">Already Have an Account?</Link></small>
-                        </div>
-                    </form>
+                    <div>
+                        <Form onSubmit={this.handleSubmit} layout={"vertical"} className={"form"}>
+                            <Item style={{width: 400}} label="Name">
+                                {
+                                    decorator("name", {
+                                        rules: [{
+                                            min: 3, message: "Minimum Length 3"
+                                        },
+                                            {
+                                                required: true, message: "Please input your Name!"
+                                            }]
+                                    })
+                                    (<Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
 
+                                            placeholder="Enter your name" />)
+                                }
+                            </Item>
+                            <Item style={{width: 400}} label="Email">
+                                {
+                                    decorator("email", {
+                                        rules: [{
+                                            type: 'email', message: "Enter valid email"
+                                        },
+                                            {
+                                                required: true, message: "please input your Email!"
+                                            }]
+                                    })
+                                    (<Input
+                                        prefix={<Icon type="mail" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                        type={"email"}
+                                        placeholder="Email"/>)
+                                }
+                            </Item>
+                            <Item label="Password" className={"password"}>
+                                {decorator('password', {
+                                    rules: [{
+                                        required: true, message: 'Please input your password!',
+                                    }, {
+                                        validator: this.validateToNextPassword,
+                                    }],
+                                })(
+                                    <Input type="password"
+                                           prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}/>
+                                )}
+                            </Item>
+                            <Item label="Confirm Password" className={"password"}>
+                                {decorator('confirm', {
+                                    rules: [{
+                                        required: true, message: 'Please confirm your password!',
+                                    }, {
+                                        validator: this.compareToFirstPassword,
+                                    }],
+                                })(
+                                    <Input
+                                        type="password" onBlur={this.handleConfirmBlur}
+                                        prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                    />
+                                )}
+                            </Item>
+                            <Button type="primary" htmlType="submit" block>Create Account</Button>
+                        </Form>
+                    </div>
+                    <div >
+                        <Link><a href="/login">Already Have an Account?</a></Link>
+                    </div>
                 </div>
-
             </div>
         )
 
     }
 }
 
-export default Register;
+export default Form.create()(withRouter(Register));
