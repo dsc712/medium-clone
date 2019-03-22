@@ -1,0 +1,50 @@
+.editor {
+    position: relative;
+    box-sizing: border-box;
+    cursor: text;
+    background: #fefefe;
+    font-size: 2em;
+}
+Select {
+    background: #345678 ;
+    padding: 8px;
+    color: white;
+    border: #345678;
+}
+
+Select:active {
+    outline: none;
+    border: none;
+    border: #345678;
+}
+Select:focus { outline:0; border: #345678 }
+Option { outline: 0; border: #345678 }
+body {
+    background: #efefef;
+}
+.atomic {
+    color: #999;
+    font-family: 'Hoefler Text', Georgia, serif;
+    font-style: italic;
+}
+
+.editor :global(.public-DraftEditor-content) {
+    min-height: 140px;
+}
+
+body {
+    color: #666666;
+}
+
+.draftJsEmojiPlugin__emojiSelectButton__3sPol {
+    margin-right: 100px;
+}
+
+.btn {
+    border: 1px solid #dddddd;
+    background-color: #ffffff;
+    color: #888888;
+    padding: 4px 18px;
+    font-size: 16px;
+    cursor: pointer;
+}

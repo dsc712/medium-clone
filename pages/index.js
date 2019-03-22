@@ -16,7 +16,7 @@ class Index extends Component {
 
     render() {
         const stories = this.state.stories.map( (val, i) => {
-            return <Card key={i} style={{ width: 1000, marginTop: 16 }} loading={this.state.loading}>
+            return <Card key={i} style={{ width: '85vw', marginTop: 16 }} loading={this.state.loading}>
                 <Meta
                     avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                     title="Title of the Story"

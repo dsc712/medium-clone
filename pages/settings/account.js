@@ -1,5 +1,5 @@
 import react, { Component } from 'react';
-import { Form, Button, Card, Input, notification } from 'antd'
+import { Form, Button, Card, Input, notification, message } from 'antd'
 import axios from 'axios';
 const Item = Form.Item;
 
@@ -31,7 +31,7 @@ class Account extends Component {
             const { data } = await axios.put(`/me/${ this.state.user.id }`, values);
             this.props.dispatch(authAction.update({ user: values }));
             console.log( this.props );
-            notification.open({ message: data.message });
+            message.success(  data.message );
         } catch(err) {
             if(err.response) {
                 notification.error({ message: err.response.data.message });
@@ -61,7 +61,7 @@ class Account extends Component {
         const decorator = this.props.form.getFieldDecorator;
         return (
             <App>
-                <Card title="Edit your profile" style={{ width: 1000}}>
+                <Card title="Edit your profile" style={{ width: '85vw'}}>
                     <Form onSubmit={ this.handleSubmit }>
                         <Item label={"Name"}>
                             {

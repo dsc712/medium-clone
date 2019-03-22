@@ -28,6 +28,7 @@ class App extends Component {
     menu = () => (
         <Menu>
             <Menu.Item key="1" onClick={e => this.props.router.push('/settings/account')}><Icon type="user" />Profile</Menu.Item>
+            <Menu.Item key="2" onClick={e => this.props.router.push('/story/new')}><Icon type="edit" />New Story</Menu.Item>
             <Menu.Item key="3" onClick={ this.logout }><Icon type="logout" /> Logout</Menu.Item>
         </Menu>
     );
