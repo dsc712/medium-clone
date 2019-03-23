@@ -42,7 +42,7 @@ class Login extends Component {
         const decorator = this.props.form.getFieldDecorator;
         return (
             <App style={{ "height": "100vh"}}>
-                <Card style={{ "padding": "10px 30px", "borderRadius": "3%"}}>
+                <Card title="Login with your registered account" style={{ "padding": "10px 30px", "borderRadius": "3%"}}>
                     <div style={{"marginBottom": "10px"}}>
                         { this.state.error && <Alert
                             description={ this.state.error }
