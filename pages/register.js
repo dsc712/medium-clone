@@ -18,7 +18,6 @@ class Register extends Component {
     };
 
     handleSubmit = e => {
-        console.log("ash submitting");
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (err) {
@@ -44,15 +43,18 @@ class Register extends Component {
         }
     }
 
-    validateToNextPassword = (rule, value) => {
+    validateToNextPassword = (e) => {
+        const value = e.target.value;
         this.setState({ password: value });
     };
 
-    compareToFirstPassword = (rule, value) => {
+    compareToFirstPassword = (e) => {
+        const value = e.target.value;
         this.setState({ confirmPassword: value });
     };
 
     checkPassword() {
+        console.log( this.state.password, this.state.confirmPassword );
         if( this.state.password !== this.state.confirmPassword ) {
             return "warning"
         }
