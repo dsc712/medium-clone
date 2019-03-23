@@ -13,11 +13,12 @@ class Register extends Component {
         name: "",
         email: "",
         password: "",
-        error: ""
+        error: "",
+        confirmPassword: ""
     };
 
     handleSubmit = e => {
-        console.log("ash submitting")
+        console.log("ash submitting");
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (err) {
@@ -31,7 +32,7 @@ class Register extends Component {
         try {
             const {data} = await axios.post("/register", values);
             cookie.session(data.token);
-            message.success("You have been Successfully Registered!! ")
+            message.success("You have been Successfully Registered!! ");
             this.props.router.push("/");
 
         } catch (err) {
@@ -42,6 +43,28 @@ class Register extends Component {
             }
         }
     }
+
+    validateToNextPassword = (rule, value) => {
+        this.setState({ password: value });
+    };
+
+    compareToFirstPassword = (rule, value) => {
+        this.setState({ confirmPassword: value });
+    };
+
+    checkPassword() {
+        if( this.state.password !== this.state.confirmPassword ) {
+            return "warning"
+        }
+        return "success";
+    };
+
+    getHelp() {
+        if( this.state.password !== this.state.confirmPassword ) {
+            return "Password doesn't match"
+        }
+        return "Password matches";
+    };
 
     render() {
         const decorator = this.props.form.getFieldDecorator;
@@ -96,26 +119,24 @@ class Register extends Component {
                                     {decorator('password', {
                                         rules: [{
                                             required: true, message: 'Please input your password!',
-                                        }, {
-                                            validator: this.validateToNextPassword,
                                         }],
                                     })(
-                                        <Input type="password"
+                                        <Input onChange={ this.validateToNextPassword }
+                                               type="password"
                                                placeholder={"Password"}
                                                prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}/>
                                     )}
                                 </Item>
-                                <Item label="Confirm Password" className={"password"}>
+                                <Item label="Confirm Password" className={"password"} hasFeedback validateStatus={ this.checkPassword() } help={ this.getHelp() }>
                                     {decorator('confirm', {
                                         rules: [{
                                             required: true, message: 'Please confirm your password!',
-                                        }, {
-                                            validator: this.compareToFirstPassword,
                                         }],
                                     })(
                                         <Input
+                                            onChange={ this.compareToFirstPassword }
                                             placeholder={"Confirm Password"}
-                                            type="password" onBlur={this.handleConfirmBlur}
+                                            type="password"
                                             prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                         />
                                     )}

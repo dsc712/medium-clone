@@ -53,7 +53,14 @@ class Login extends Component {
                         <Item style={{ width: 400 }} label={"Email"}>
                             {
                                 decorator('email', {
-                                    rules: [{ required: true, message: 'Please enter your email'}]
+                                    rules: [
+                                        {
+                                            required: true, message: 'Please enter your email'
+                                        },
+                                        {
+                                            type: 'email', message: "Enter valid email"
+                                        },
+                                    ]
                                 })(
                                     <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                                 )
@@ -69,7 +76,7 @@ class Login extends Component {
                             }
                         </Item>
                         <Button loading={ this.state.isChecking } type="primary" htmlType="submit" block>Login</Button>
-                        <div style={{ "margin": "25px auto" }}>
+                        <div style={{ "textAlign": "center", "marginTop": "15px" }}>
                             <Link href="/register"><a>Create new account</a></Link>
                         </div>
                     </Form>

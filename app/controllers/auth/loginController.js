@@ -21,10 +21,10 @@ exports.login = async (req, res) => {
     try {
         const user = await User.query().where('email', req.body.email ).first();
         if(!req.body.password || !user  ) {
-            return res.status(422).send({ message: 'Username or Password is incorrect.' });
+            return res.status(422).send({ message: 'Email or Password is incorrect.' });
         }
         if(!user || !await compare(req.body.password, user.password)) {
-            return res.status(422).send({ message: 'Username or Password is incorrect.' });
+            return res.status(422).send({ message: 'Email or Password is incorrect.' });
         }
 
         const token = sign(user);
