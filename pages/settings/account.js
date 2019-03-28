@@ -1,5 +1,5 @@
 import react, { Component } from 'react';
-import { Form, Button, Card, Input, notification, message } from 'antd'
+import { Form, Button, Card, Input, notification, message, Table, Divider } from 'antd'
 import axios from 'axios';
 const Item = Form.Item;
 
@@ -15,6 +15,29 @@ class Account extends Component {
         user: null
     };
 
+    columns = [{
+       title: 'Id',
+       dataIndex: 'id',
+       key: 'id'
+    }, {
+        title: 'Story title',
+        dataIndex: 'story',
+        key: 'story'
+    }, {
+        title: 'Claps',
+        dataIndex: 'claps',
+        key: 'claps'
+    },{
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+            <span>
+                 <a href="javascript:;">Invite {record.name}</a>
+                 <Divider type="vertical" />
+                  <a href="javascript:;">Delete</a>
+             </span>
+        ),
+    }];
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -82,6 +105,7 @@ class Account extends Component {
                         <Button loading={this.state.isUpdating } htmlType={"submit"}>Save</Button>
                     </Form>
                 </Card>
+                <Table style={{ marginTop: "20px"}} title={() => 'Your Stories'} columns={this.columns} />
             </App>
         )
     }

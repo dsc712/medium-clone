@@ -12,6 +12,8 @@ import { message } from 'antd';
 
 import '../components/layouts/app.css'
 import 'nprogress/nprogress.css';
+import 'draft-js/dist/Draft.css'
+
 
 
 axios.defaults.baseURL = 'http://127.0.0.1:3001/api/';

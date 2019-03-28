@@ -29,7 +29,7 @@ import 'prismjs/themes/prism-solarizedlight.css';
 
 
 import './editor.css'
-import 'draft-js/dist/Draft.css'
+// import 'draft-js/dist/Draft.css'
 
 // emoji plugin
 const emojiPlugin = createEmojiPlugin();
@@ -151,7 +151,7 @@ class MyEditor extends Component {
                         </Field>
                         <b>Story:</b>
                         <Divider />
-                        <div style={{ padding: "5px", border: "1px solid #ddd"}}>
+                        <div style={{ padding: "5px", border: "1px solid #ddd", fontSize: "20px"}}>
                             <Editor
                                 className="editor"
                                 editorState={ this.state.editorState }
@@ -187,7 +187,7 @@ class MyEditor extends Component {
                     </Form>
                     <Divider />
                 </div>
-                <Button loading={ this.state.isLoading }  onClick={ this.onSubmit }>Save</Button>
+                <Button loading={ this.state.isLoading } htmlType="submit" onClick={ this.onSubmit }>Save</Button>
             </Card>
         );
     }
