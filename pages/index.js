@@ -46,7 +46,7 @@ export class Index extends Component {
           <InfiniteScroll
             dataLength={this.state.stories.length}
             next={this.fetchStories}
-            hasMore={true}
+            hasMore={this.state.hasMore}
             loader={
               <div>
                 <div className="loader-ellips">
