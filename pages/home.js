@@ -7,17 +7,16 @@ import Story from "../components/Story";
 export class Home extends Component {
   state = {
     page: 0,
-    stories: [""],
+    stories: [],
     count: 2
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { count, page } = this.state;
     axios.get(`/stories?page=${page}&count=${count}`).then(res => {
       this.setState({
-        stories: res.data
+        stories: res.data.data.results
       });
-      console.log(this.state.stories.length);
     });
   }
 
@@ -28,11 +27,9 @@ export class Home extends Component {
     });
     axios.get(`/stories?count=${count}&start=${page}`).then(res => {
       this.setState({
-        stories: this.state.stories.concat(res.data)
+        stories: [...this.state.stories, res.data ]
       });
-      // console.log(res.data.results);
     });
-    console.log(this.state.stories);
   };
 
   render() {
@@ -50,9 +47,11 @@ export class Home extends Component {
               </p>
             }
           >
-            {this.state.stories.map(story => (
-              <Story key={story.id} story={story} />
-            ))}
+            {
+              this.state.stories.map(story => (
+                <Story key={story.id} story={story} />
+               ))
+            }
           </InfiniteScroll>
         </div>
       </App>

@@ -6,7 +6,7 @@ exports.stories = async (req, res) => {
       .query()
       .page(Number(req.query.page), Number(req.query.count)); 
     res.send({ data: story });
-  } catch {
-    res.send({ message: err.message });
+  } catch(err) {
+    res.status(500).send({ message: err.message });
   }
 };
