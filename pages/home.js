@@ -8,7 +8,8 @@ export class Home extends Component {
   state = {
     page: 0,
     stories: [],
-    count: 2
+    count: 2,
+    loading: false
   };
 
   componentDidMount() {
@@ -23,13 +24,18 @@ export class Home extends Component {
   fetchStories = () => {
     const { count, page } = this.state;
     this.setState({
-      page: this.state.page + count
+      page: this.state.page + count,
+      loading: true
     });
     axios.get(`/stories?count=${count}&start=${page}`).then(res => {
+      console.log( res.data );
       this.setState({
-        stories: [...this.state.stories, res.data ]
+        stories: [...this.state.stories, res.data.data.results ]
       });
     });
+    setTimeout( () => {
+      this.setState({ loading: false });
+    }, 500);
   };
 
   render() {
@@ -49,7 +55,7 @@ export class Home extends Component {
           >
             {
               this.state.stories.map(story => (
-                <Story key={story.id} story={story} />
+                <Story key={story.id} story={story} loading={ this.state.loading } />
                ))
             }
           </InfiniteScroll>

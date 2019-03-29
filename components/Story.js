@@ -5,7 +5,7 @@ const { Meta } = Card;
 export class Story extends Component {
   render(props) {
     return (
-      <Card style={{ width: "85vw", marginTop: 16 }}>
+      <Card style={{ width: "85vw", marginTop: 16 }} loading={ this.props.loading }>
         <Meta
           avatar={
             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
