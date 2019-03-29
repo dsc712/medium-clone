@@ -1,12 +1,12 @@
 import react, {Component} from 'react';
 import cookie from 'js-cookie';
-import {Form, Input, Icon, Card, Button, Head, Alert, message, Layout } from 'antd';
+import {Form, Input, Icon, Card, Button, Head, Alert, message, Layout} from 'antd';
 import Link from 'next/link';
-import { withRouter } from "next/router";
+import {withRouter} from "next/router";
 import axios from 'axios';
 
 const Item = Form.Item;
-const { Header, Content, Footer } = Layout;
+const {Header, Content, Footer} = Layout;
 
 class Register extends Component {
     state = {
@@ -45,24 +45,24 @@ class Register extends Component {
 
     validateToNextPassword = (e) => {
         const value = e.target.value;
-        this.setState({ password: value });
+        this.setState({password: value});
     };
 
     compareToFirstPassword = (e) => {
         const value = e.target.value;
-        this.setState({ confirmPassword: value });
+        this.setState({confirmPassword: value});
     };
 
     checkPassword() {
-        console.log( this.state.password, this.state.confirmPassword );
-        if( this.state.password !== this.state.confirmPassword ) {
+        console.log(this.state.password, this.state.confirmPassword);
+        if (this.state.password !== this.state.confirmPassword) {
             return "warning"
         }
         return "success";
     };
 
     getHelp() {
-        if( this.state.password !== this.state.confirmPassword ) {
+        if (this.state.password !== this.state.confirmPassword) {
             return "Password doesn't match"
         }
         return "Password matches";
@@ -72,11 +72,20 @@ class Register extends Component {
         const decorator = this.props.form.getFieldDecorator;
         return (
             <Layout>
-                <Header style={{ display: "flex", color:"#fff", justifyContent: "space-between", position: 'fixed', zIndex: 1, width: '100%'}}>
-                    <Link href={"/"}><b><Icon style={{"fontSize": "32px", "cursor": "pointer" }} type="medium"/></b></Link>
+                <Header style={{
+                    display: "flex",
+                    color: "#fff",
+                    justifyContent: "space-between",
+                    position: 'fixed',
+                    zIndex: 1,
+                    width: '100%'
+                }}>
+                    <Link href={"/"}><b><Icon style={{"fontSize": "32px", "cursor": "pointer"}}
+                                              type="medium"/></b></Link>
                 </Header>
                 <Content>
-                    <Card style={{ width: 500, margin: '85px auto', borderRadius: "3%", padding: "10px 30px" }} title="Create Account">
+                    <Card style={{width: 500, margin: '85px auto', borderRadius: "3%", padding: "10px 30px"}}
+                          title="Create Account">
                         <div style={{"marginBottom": "10px"}}>
                             {this.state.error && <Alert
                                 description={this.state.error}
@@ -85,7 +94,7 @@ class Register extends Component {
                             }</div>
 
                         <div>
-                            <Form onSubmit={this.handleSubmit} layout={"vertical"} >
+                            <Form onSubmit={this.handleSubmit} layout={"vertical"}>
                                 <Item label="Name">
                                     {
                                         decorator("name", {
@@ -97,7 +106,8 @@ class Register extends Component {
                                                 }]
                                         })
                                         (
-                                            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Enter your name" />
+                                            <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                                   placeholder="Enter your name"/>
                                         )
                                     }
                                 </Item>
@@ -105,10 +115,10 @@ class Register extends Component {
                                     {
                                         decorator("email", {
                                             rules: [{
-                                                type: 'email', message: "Enter valid email"
+                                                type: 'email', message: "Enter a valid email"
                                             },
                                                 {
-                                                    required: true, message: "please input your Email!"
+                                                    required: true, message: "Please input your Email!"
                                                 }]
                                         })
                                         (<Input
@@ -123,20 +133,21 @@ class Register extends Component {
                                             required: true, message: 'Please input your password!',
                                         }],
                                     })(
-                                        <Input onChange={ this.validateToNextPassword }
+                                        <Input onChange={this.validateToNextPassword}
                                                type="password"
                                                placeholder={"Password"}
                                                prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}/>
                                     )}
                                 </Item>
-                                <Item label="Confirm Password" className={"password"} hasFeedback validateStatus={ this.checkPassword() } help={ this.getHelp() }>
+                                <Item label="Confirm Password" className={"password"} hasFeedback
+                                      validateStatus={this.checkPassword()} help={this.getHelp()}>
                                     {decorator('confirm', {
                                         rules: [{
                                             required: true, message: 'Please confirm your password!',
                                         }],
                                     })(
                                         <Input
-                                            onChange={ this.compareToFirstPassword }
+                                            onChange={this.compareToFirstPassword}
                                             placeholder={"Confirm Password"}
                                             type="password"
                                             prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
@@ -146,14 +157,14 @@ class Register extends Component {
                                 <Button type="primary" htmlType="submit" block>Create Account</Button>
                             </Form>
                         </div>
-                        <div style={{ "textAlign": "center", "marginTop": "10px" }}>
+                        <div style={{"textAlign": "center", "marginTop": "10px"}}>
                             <Link href="/login">Already Have an Account?</Link>
                         </div>
                     </Card>
                 </Content>
-                <Footer style={{ textAlign: 'center', fontSize: '20px' }}>
+                <Footer style={{textAlign: 'center', fontSize: '20px'}}>
                     Medium Clone ©2019
-                    Made with <Icon type="heart" />
+                    Made with <Icon type="heart"/>
                 </Footer>
             </Layout>
 
