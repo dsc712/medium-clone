@@ -1,42 +1,68 @@
-import react, { Component } from "react";
+import React, { Component } from "react";
+import axios from "axios";
+import InfiniteScroll from "react-infinite-scroll-component";
 import App from "../components/layouts/App";
-import { Card, Avatar, Divider } from "antd";
-const { Meta } = Card;
-class Index extends Component { 
+import Story from "../components/Story";
+
+export class Index extends Component {
   state = {
-    loading: true,
-    stories: ["Story 1", "Story 2", "Story 3", "Story 4", "Story 5"]
+    page: 0,
+    stories: [],
+    count: 2,
+    loading: false
   };
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ loading: false });
-    }, 3000);
+    const { count, page } = this.state;
+    axios.get(`/stories?page=${page}&count=${count}`).then(res => {
+      this.setState({
+        stories: res.data.data.results
+      });
+    });
   }
 
-    render() {
-        const stories = this.state.stories.map( (val, i) => {
-            return <Card key={i} style={{ width: '85vw', marginTop: 16 }} loading={this.state.loading}>
-                <Meta
-                    avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                    title="Title of the Story"
-                    description="This is the description"
-                />
-                <Divider/>
-                <p>
-                   This is the story of a man in the woods working over the power hungry
-                    robot that he made after learning AI in iiitd which can also be some shitty behave so...
-                </p>
-            </Card>
-        });
+  fetchStories = () => {
+    const { count, page } = this.state;
+    this.setState({
+      page: this.state.page + count,
+      loading: true
+    });
+    axios.get(`/stories?count=${count}&start=${page}`).then(res => {
+      console.log( res.data );
+      this.setState({
+        stories: [...this.state.stories, res.data.data.results ]
+      });
+    });
+    setTimeout( () => {
+      this.setState({ loading: false });
+    }, 500);
+  };
 
-        return (
-            <App style={{ "display": "flex", "flexDirection": "column"}}>
-                <h1> Stories based on your reading history </h1>
-                { stories }
-            </App>
-        )
-    }
+  render() {
+    return (
+      <App style={{ display: "flex", flexDirection: "row" }}>
+        <div className="stories">
+          <InfiniteScroll
+            dataLength={this.state.stories.length}
+            next={this.fetchStories}
+            hasMore={true}
+            loader={<h2>Cooking More Stories For You...</h2>}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
+            {
+              this.state.stories.map(story => (
+                <Story key={story.id} story={story} loading={ this.state.loading } />
+               ))
+            }
+          </InfiniteScroll>
+        </div>
+      </App>
+    );
+  }
 }
 
 export default Index;
