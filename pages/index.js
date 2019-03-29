@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Spin, Icon } from 'antd';
+import { Spin } from 'antd';
 import InfiniteScroll from "react-infinite-scroll-component";
 import App from "../components/layouts/App";
 import Story from "../components/Story";
@@ -91,6 +91,6 @@ export class Index extends Component {
       </App>
     );
   }
-}}
+}
 
 export default Index;
