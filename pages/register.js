@@ -54,9 +54,9 @@ class Register extends Component {
     };
 
     checkPassword() {
-        console.log(this.state.password, this.state.confirmPassword);
-        if (this.state.password !== this.state.confirmPassword) {
-            return "warning"
+        console.log( this.state.password, this.state.confirmPassword );
+        if( this.state.password !== this.state.confirmPassword ) {
+            return "error"
         }
         return "success";
     };

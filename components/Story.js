@@ -1,48 +1,25 @@
 import React, { Component } from "react";
-import { Skeleton, Card, Icon, Avatar, Divider, Tooltip } from "antd";
+import { Card, Avatar, Divider } from "antd";
 const { Meta } = Card;
 
 export class Story extends Component {
-  state = {
-    loading: true
-  };
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ loading: false });
-    }, 2000);
-  }
 
-  render(props) {
-    const { loading } = this.state;
+  render() {
     return (
-    
-      <Card
-        style={{ width: "40vw", marginTop: 16 }}
-        actions={[
-          <Icon type="book" />,
-          <Icon type="edit" />,
-          <Icon type="message" />
-        ]}
-      >
-        <Skeleton loading={loading} avatar active>
-          <Meta
-            avatar={
-              <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-            }
-            title="Card title"
-            description="This is the description"
-          />
-          <Divider />
-          <p>
-            <p>
-              There will be a body of this story here when Lorem ipsum dolor sit
-              amet consectetur adipisicing elit. Deleniti, ullam! Accusantium
-              maxime necessitatibus maiores laborum blanditiis quis rem in
-              possimus debitis asperiores. Corrupti, aspernatur. Minus quo ipsam
-              facere modi magni.
-            </p>
-          </p>
-        </Skeleton>
+      <Card style= {{ "width": "85vw", "marginTop": "15px" }} loading={ this.props.loading} >
+            <Meta
+              avatar={
+                <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+              }
+              title="Title of the Story"
+              description="This is the description"
+            />
+        <Divider />
+        <p>
+          This is the story of a man in the woods working over the power hungry
+          robot that he made after learning AI in iiitd which can also be some
+          shitty behave so...
+        </p>
       </Card>
     );
   }

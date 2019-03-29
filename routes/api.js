@@ -22,7 +22,6 @@ const story = controller("storyController");
 
 // routes without authentication
 // auth routes
-app.get("/stories", story.stories);
 
 app.post("/register", registration.register);
 app.post("/login", login.login);
@@ -37,6 +36,13 @@ app.post("/test", test.create);
 app.get("/me", profile.me);
 app.put("/me/:user", profile.update);
 
+//story routes
+app.get("/stories", story.stories);
+app.get("/stories/:story", story.find );
+app.post("/stories", story.create );
+app.put("/stories/:story", story.update );
+app.get("/users/:user/stories/", story.userStories );
+app.delete("/users/:user/stories/:story", story.destroy );
 app.all("*", (req, res) => {
   res.status(404).send({ message: "The route you are looking is not found." });
 });

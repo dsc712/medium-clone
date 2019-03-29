@@ -1,5 +1,6 @@
 import react, { Component } from 'react';
-import { Form, Button, Card, Input, notification, message, Table, Divider } from 'antd'
+import { Form, Button, Card, Input, notification, message, Table, Divider, Tooltip, Popconfirm, Icon } from 'antd';
+import Link from 'next/link';
 import axios from 'axios';
 const Item = Form.Item;
 
@@ -21,8 +22,9 @@ class Account extends Component {
        key: 'id'
     }, {
         title: 'Story title',
-        dataIndex: 'story',
-        key: 'story'
+        dataIndex: 'title',
+        key: 'title',
+        render: (title) => this.renderTitle(title)
     }, {
         title: 'Claps',
         dataIndex: 'claps',
@@ -30,14 +32,38 @@ class Account extends Component {
     },{
         title: 'Action',
         key: 'action',
-        render: (text, record) => (
-            <span>
-                 <a href="javascript:;">Invite {record.name}</a>
-                 <Divider type="vertical" />
-                  <a href="javascript:;">Delete</a>
-             </span>
-        ),
+        render: (a,record) => this.renderAction(record),
     }];
+
+    renderAction(record) {
+        const text = "Are you sure, you want to delete this story?";
+        return (
+            <div>
+                <Link as={`/story/${ record.id }/edit`} href={`/story/new?story=${ record.id}`}><a><Tooltip title="Edit Story"><Icon type="edit" /></Tooltip></a></Link>
+                <Divider type="vertical" />
+                <a><Popconfirm title={text} onConfirm={this.confirm.bind(this, record.id)} okText="Yes" cancelText="No">
+                    <Icon type="close" />
+                </Popconfirm></a>
+            </div>
+        )
+    }
+    renderTitle = ( title ) => {
+        if(title){
+            if( title.length > 20 ){
+                title = title.substring(0,20);
+                return <div>{ title }...</div>
+            }
+            return <div>{ title }</div>
+        }
+
+        return '-'
+    };
+
+    confirm = async (params) => {
+        const data = await axios.delete(`/users/${ this.state.user.id }/stories/${ params }`);
+        this.fetchUserStories();
+    };
+
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -76,8 +102,16 @@ class Account extends Component {
         });
     }
 
+    async fetchUserStories() {
+        const  { data }  = await axios.get(`/users/${this.state.user.id}/stories`);
+        this.setState({ stories: data.stories });
+    }
+
     componentDidMount() {
         this.fetchProfile();
+        setTimeout(() => {
+            this.fetchUserStories();
+        }, 1000);
     }
 
     render() {
@@ -105,7 +139,9 @@ class Account extends Component {
                         <Button loading={this.state.isUpdating } htmlType={"submit"}>Save</Button>
                     </Form>
                 </Card>
-                <Table style={{ marginTop: "20px"}} title={() => 'Your Stories'} columns={this.columns} />
+                <Card style={{ marginTop: "20px"}}>
+                    <Table dataSource={ this.state.stories }  title={() => 'Your Stories'} columns={this.columns} />
+                </Card>
             </App>
         )
     }

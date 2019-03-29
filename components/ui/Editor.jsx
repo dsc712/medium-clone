@@ -3,10 +3,10 @@ import { EditorState, RichUtils } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import { stateFromHTML } from 'draft-js-import-html';
 import Editor from 'draft-js-plugins-editor';
+import { withRouter } from 'next/router';
 import axios from 'axios';
-import { Button, Form, Input, Divider, notification, Card, Select } from 'antd';
+import { Button, Form, Input, Divider, notification, Card, message } from 'antd';
 const Field = Form.Item;
-const Option = Select.Option;
 
 import { ItalicButton, BoldButton, UnderlineButton } from 'draft-js-buttons';
 
@@ -74,6 +74,7 @@ class MyEditor extends Component {
     constructor(props) {
         super(props);
         this.onChange = (editorState) => { this.setState({ editorState, body: this.getContentStateInHTML() }) };
+        this.props.story && this.fetchStory(this.props.story);
     }
 
     state = {
@@ -93,12 +94,27 @@ class MyEditor extends Component {
     };
 
     getContentStateInHTML = () => {
-        const data = stateToHTML( this.state.editorState.getCurrentContent() );
-        return data;
+        return stateToHTML( this.state.editorState.getCurrentContent() );
     };
 
     async fetchStory(id) {
-
+        try {
+            this.setState({ isLoadingForm: true });
+            const res = await axios.get(`/stories/${id}`);
+            this.props.form.setFieldsValue({
+                title: res.data.story.title,
+                featured_image: res.data.story.featured_image,
+            });
+            this.setState({ body: res.data.story.body });
+            this.convertHTMLToEditorState();
+        } catch(err) {
+            if(err.response) {
+                notification.error({ message: err.response.data.message })
+            } else {
+                throw err;
+            }
+        }
+        this.setState({ isLoadingForm: false });
     }
 
     convertHTMLToEditorState = () => {
@@ -116,7 +132,28 @@ class MyEditor extends Component {
     };
 
     async sendRequest(values) {
-
+        this.setState({ isLoading: true});
+        try {
+            let res;
+            if( this.props.story ) {
+                res = await axios.put(`/stories/${ this.props.story }`, { ...values, story: this.state.body } );
+                console.log(res.data.data);
+            } else {
+                console.log( this.state.body );
+                res = await axios.post('/stories', { ...values, story: this.state.body } );
+                console.log(res);
+            }
+            message.success("Story Saved Successfully");
+            console.log(res);
+            this.props.router.push('/settings/account');
+        } catch(err) {
+            if(err.response) {
+                notification.error({ message: err.response.data.message })
+            } else {
+                throw err;
+            }
+        }
+        this.setState({ isLoading: false });
     }
 
     myBlockStyleFn = ( contentBlock ) => {
@@ -136,7 +173,7 @@ class MyEditor extends Component {
                     <Form onSubmit={ this.onSubmit }>
                         <Field label={"Title of the story"}>
                             {
-                                decorator('name',{
+                                decorator('title',{
                                     rules: [{ required: true }]
                                 })(<Input placeholder={"Write your catchy title here..."}/>)
                             }
@@ -193,4 +230,5 @@ class MyEditor extends Component {
     }
 }
 
-export default Form.create()(MyEditor);
+
+export default Form.create()( withRouter(MyEditor));

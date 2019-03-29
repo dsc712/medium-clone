@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Spin, Icon } from 'antd';
 import InfiniteScroll from "react-infinite-scroll-component";
 import App from "../components/layouts/App";
 import Story from "../components/Story";
@@ -22,6 +23,8 @@ export class Index extends Component {
     });
   }
 
+  antIcon = <Icon type="radar-chart" style={{ fontSize: 54 }} spin />;
+
   fetchStories = () => {
     const { count, page } = this.state;
     this.setState({
@@ -34,9 +37,7 @@ export class Index extends Component {
         stories: [...this.state.stories, res.data.data.results]
       });
     });
-    setTimeout(() => {
       this.setState({ loading: false });
-    }, 500);
   };
 
   render() {
@@ -46,20 +47,12 @@ export class Index extends Component {
           <InfiniteScroll
             dataLength={this.state.stories.length}
             next={this.fetchStories}
-            hasMore={this.state.hasMore}
+            hasMore={true}
             loader={
-              <div>
-                <div className="loader-ellips">
-                  <span className="loader-ellips__dot one" />
-                  <span className="loader-ellips__dot two" />
-                  <span className="loader-ellips__dot three" />
-                  <span className="loader-ellips__dot four" />
-                </div>
-                <p style={{ textAlign: "center" }}>
-                  <b>Cooking more stories for you</b>
-                </p>
-              </div>
-            }
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center",width: "85vw", height: "300px", padding: "0 auto"}}>
+                <Spin  style={{ textAlign: "center" }} indicator={this.antIcon}/>
+                <h2>Cooking Stories for you...</h2>
+              </div> }
             endMessage={
               <div style={{ padding: "20px" }}>
                 <p style={{ textAlign: "center" }}>
@@ -88,35 +81,16 @@ export class Index extends Component {
               </div>
             }
           >
-            <div>
-              <BackTop visibilityHeight="200" />
-            </div>
-            <Divider>Stories</Divider>>
-            <Row type="flex" justify="space-around">
-              {this.state.stories.map(story => (
-                <div>
-                  <Col span={12}>
-                    <Story
-                      key={story.id}
-                      story={story}
-                      loading={this.state.loading}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <Story
-                      key={story.id}
-                      story={story}
-                      loading={this.state.loading}
-                    />
-                  </Col>
-                </div>
-              ))}
-            </Row>
+            {
+              this.state.stories.map(story => (
+                <Story  key={story.id} story={story} loading={ this.state.loading } />
+               ))
+            }
           </InfiniteScroll>
         </div>
       </App>
     );
   }
-}
+}}
 
 export default Index;
