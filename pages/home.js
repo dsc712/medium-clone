@@ -6,108 +6,49 @@ import Story from "../components/Story";
 
 export class Home extends Component {
   state = {
-    start: 1,
-    stories: [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
-    count: 10
+    page: 0,
+    stories: [""],
+    count: 2
   };
 
-  componentDidMount() {
-    const { count, start } = this.state;
-    axios.get(`/api/stories?count=${count}&start=${start}`).then(res =>
+  componentWillMount() {
+    const { count, page } = this.state;
+    axios.get(`/stories?page=${page}&count=${count}`).then(res => {
       this.setState({
         stories: res.data
-      })
-    );
+      });
+      console.log(this.state.stories.length);
+    });
   }
 
   fetchStories = () => {
-    const { count, start } = this.state;
+    const { count, page } = this.state;
     this.setState({
-      start: this.state.start + count
+      page: this.state.page + count
     });
-    axios.get(`/api/stories?count=${count}&start=${start}`).then(res => {
+    axios.get(`/stories?count=${count}&start=${page}`).then(res => {
       this.setState({
         stories: this.state.stories.concat(res.data)
       });
+      // console.log(res.data.results);
     });
+    console.log(this.state.stories);
   };
 
   render() {
     return (
-      <App style={{ display: "flex", flexDirection: "column" }}>
+      <App style={{ display: "flex", flexDirection: "row" }}>
         <div className="stories">
           <InfiniteScroll
             dataLength={this.state.stories.length}
             next={this.fetchStories}
             hasMore={true}
             loader={<h2>Cooking More Stories For You...</h2>}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
           >
             {this.state.stories.map(story => (
               <Story key={story.id} story={story} />

@@ -1,36 +1,9 @@
-import { Model } from 'objection';
+const { Model } = require("objection");
 
 class Story extends Model {
-    static get tableName() {
-        return 'stories'
-    }
-
-    static get relationMappings() {
-        const Writer = require('./User');
-        const Publisher = require('./Publisher');
-
-        const writer = {
-            relation: Model.BelongsToOneRelation,
-            modelClass: Writer,
-            join: {
-                from: 'stories.writer_id',
-                to: 'users.id'
-            }
-        };
-
-        const publisher = {
-          relation: Model.BelongsToOneRelation,
-          modelClass: Publisher,
-          join: {
-              from: 'stories.publisher_id',
-              to: 'publishers.id'
-          }
-        };
-
-        return {
-          writer,
-          publisher
-        }
-    }
+  static get tableName() {
+    return "stories";
+  }
 }
-export default Story;
+
+module.exports = Story;
