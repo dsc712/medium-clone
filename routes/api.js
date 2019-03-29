@@ -18,11 +18,11 @@ const test = controller("testController");
 const registration = controller("auth/registerController");
 const login = controller("auth/loginController");
 const profile = controller("profileController");
-const fetchStory = controller("storiesFetch");
+const story = controller("storyController");
 
 // routes without authentication
 // auth routes
-app.get("/stories", fetchStory.stories);
+app.get("/stories", story.stories);
 
 app.post("/register", registration.register);
 app.post("/login", login.login);
