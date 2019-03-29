@@ -5,12 +5,12 @@ import App from "../components/layouts/App";
 import Story from "../components/Story";
 import { Icon, Divider, BackTop, Row, Col } from "antd";
 
-export class Index extends Component {
+export class Home extends Component {
   state = {
     page: 0,
     stories: [],
     count: 2,
-    loading: false
+    hasMore: true
   };
 
   componentDidMount() {
@@ -23,19 +23,24 @@ export class Index extends Component {
   }
 
   fetchStories = () => {
-    const { count, page } = this.state;
-    this.setState({
-      page: this.state.page + count,
-      loading: true
-    });
-    axios.get(`/stories?count=${count}&start=${page}`).then(res => {
-      console.log(res.data);
-      this.setState({
-        stories: [...this.state.stories, res.data.data.results]
-      });
-    });
     setTimeout(() => {
-      this.setState({ loading: false });
+      if (this.state.stories.length >= 10) {
+        this.setState({
+          hasMore: false
+        });
+        return;
+      }
+
+      const { count, page } = this.state;
+      this.setState({
+        page: this.state.page + count
+      });
+      axios.get(`/stories?count=${count}&start=${page}`).then(res => {
+        this.setState({
+          stories: [...this.state.stories, res.data.data.results]
+        });
+      });
+      console.log(this.state.stories);
     }, 500);
   };
 
@@ -46,7 +51,7 @@ export class Index extends Component {
           <InfiniteScroll
             dataLength={this.state.stories.length}
             next={this.fetchStories}
-            hasMore={true}
+            hasMore={this.state.hasMore}
             loader={
               <div>
                 <div className="loader-ellips">
@@ -91,27 +96,20 @@ export class Index extends Component {
             <div>
               <BackTop visibilityHeight="200" />
             </div>
-            <Divider>Stories</Divider>>
+            <Divider>Stories</Divider>
             <Row type="flex" justify="space-around">
               {this.state.stories.map(story => (
                 <div>
                   <Col span={12}>
-                    <Story
-                      key={story.id}
-                      story={story}
-                      loading={this.state.loading}
-                    />
+                    <Story key={story.id} story={story} />
                   </Col>
                   <Col span={12}>
-                    <Story
-                      key={story.id}
-                      story={story}
-                      loading={this.state.loading}
-                    />
+                    <Story key={story.id} story={story} />
                   </Col>
                 </div>
               ))}
             </Row>
+            <Divider />
           </InfiniteScroll>
         </div>
       </App>
@@ -119,4 +117,4 @@ export class Index extends Component {
   }
 }
 
-export default Index;
+export default Home;
