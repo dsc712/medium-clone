@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Spin } from 'antd';
+import { Spin } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import App from "../components/layouts/App";
 import Story from "../components/Story";
@@ -11,14 +11,18 @@ export class Index extends Component {
     page: 0,
     stories: [],
     count: 2,
-    loading: false
+    loading: false,
+    hasMore: true,
+    total: 0
   };
 
   componentDidMount() {
     const { count, page } = this.state;
     axios.get(`/stories?page=${page}&count=${count}`).then(res => {
       this.setState({
-        stories: res.data.data.results
+        stories: this.state.stories.concat(res.data.data.results),
+        page: this.state.page + 1,
+        total: res.data.data.total
       });
     });
   }
@@ -27,17 +31,20 @@ export class Index extends Component {
 
   fetchStories = () => {
     const { count, page } = this.state;
-    this.setState({
-      page: this.state.page + count,
-      loading: true
-    });
-    axios.get(`/stories?count=${count}&start=${page}`).then(res => {
-      console.log(res.data);
+    if (this.state.stories.length >= this.state.total) {
       this.setState({
-        stories: [...this.state.stories, res.data.data.results]
+        hasMore: false
+      });
+      return;
+    }
+    axios.get(`/stories?page=${page}&count=${count}`).then(res => {
+      this.setState({
+        stories: this.state.stories.concat(res.data.data.results),
+        page: this.state.page + 1,
+        total: res.data.data.total
       });
     });
-      this.setState({ loading: false });
+    this.setState({ loading: false });
   };
 
   render() {
@@ -47,12 +54,25 @@ export class Index extends Component {
           <InfiniteScroll
             dataLength={this.state.stories.length}
             next={this.fetchStories}
-            hasMore={true}
+            hasMore={this.state.hasMore}
             loader={
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center",width: "85vw", height: "300px", padding: "0 auto"}}>
-                <Spin  style={{ textAlign: "center" }} indicator={this.antIcon}/>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  width: "85vw",
+                  height: "300px",
+                  padding: "0 auto"
+                }}
+              >
+                <Spin
+                  style={{ textAlign: "center" }}
+                  indicator={this.antIcon}
+                />
                 <h2>Cooking Stories for you...</h2>
-              </div> }
+              </div>
+            }
             endMessage={
               <div style={{ padding: "20px" }}>
                 <p style={{ textAlign: "center" }}>
@@ -81,11 +101,13 @@ export class Index extends Component {
               </div>
             }
           >
-            {
-              this.state.stories.map(story => (
-                <Story  key={story.id} story={story} loading={ this.state.loading } />
-               ))
-            }
+            {this.state.stories.map(story => (
+              <Story
+                key={story.id}
+                story={story}
+                loading={this.state.loading}
+              />
+            ))}
           </InfiniteScroll>
         </div>
       </App>

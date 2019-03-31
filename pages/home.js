@@ -10,37 +10,36 @@ export class Home extends Component {
     page: 0,
     stories: [],
     count: 2,
-    hasMore: true
+    hasMore: true,
+    total: 0
   };
-
   componentDidMount() {
     const { count, page } = this.state;
     axios.get(`/stories?page=${page}&count=${count}`).then(res => {
       this.setState({
-        stories: res.data.data.results
+        stories: this.state.stories.concat(res.data.data.results),
+        page: this.state.page + 1,
+        total: res.data.data.total
       });
     });
   }
 
   fetchStories = () => {
     setTimeout(() => {
-      if (this.state.stories.length >= 10) {
+      if (this.state.stories.length >= this.state.total) {
         this.setState({
           hasMore: false
         });
         return;
       }
-
       const { count, page } = this.state;
-      this.setState({
-        page: this.state.page + count
-      });
-      axios.get(`/stories?count=${count}&start=${page}`).then(res => {
+      axios.get(`/stories?page=${page}&count=${count}`).then(res => {
         this.setState({
-          stories: [...this.state.stories, res.data.data.results]
+          stories: this.state.stories.concat(res.data.data.results),
+          page: this.state.page + 1,
+          total: res.data.data.total
         });
       });
-      console.log(this.state.stories);
     }, 500);
   };
 
@@ -97,18 +96,11 @@ export class Home extends Component {
               <BackTop visibilityHeight="200" />
             </div>
             <Divider>Stories</Divider>
-            <Row type="flex" justify="space-around">
-              {this.state.stories.map(story => (
-                <div>
-                  <Col span={12}>
-                    <Story key={story.id} story={story} />
-                  </Col>
-                  <Col span={12}>
-                    <Story key={story.id} story={story} />
-                  </Col>
-                </div>
-              ))}
-            </Row>
+
+            {this.state.stories.map(story => (
+              <Story key={story.id} story={story} />
+            ))}
+
             <Divider />
           </InfiniteScroll>
         </div>
