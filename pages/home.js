@@ -10,37 +10,36 @@ export class Home extends Component {
     page: 0,
     stories: [],
     count: 2,
-    hasMore: true
+    hasMore: true,
+    total: 0
   };
-
   componentDidMount() {
     const { count, page } = this.state;
     axios.get(`/stories?page=${page}&count=${count}`).then(res => {
       this.setState({
-        stories: res.data.data.results
+        stories: this.state.stories.concat(res.data.data.results),
+        page: this.state.page + 1,
+        total: res.data.data.total
       });
     });
   }
 
   fetchStories = () => {
     setTimeout(() => {
-      if (this.state.stories.length >= 10) {
+      if (this.state.stories.length >= this.state.total) {
         this.setState({
           hasMore: false
         });
         return;
       }
-
       const { count, page } = this.state;
-      this.setState({
-        page: this.state.page + count
-      });
-      axios.get(`/stories?count=${count}&start=${page}`).then(res => {
+      axios.get(`/stories?page=${page}&count=${count}`).then(res => {
         this.setState({
-          stories: [...this.state.stories, res.data.data.results]
+          stories: this.state.stories.concat(res.data.data.results),
+          page: this.state.page + 1,
+          total: res.data.data.total
         });
       });
-      console.log(this.state.stories);
     }, 500);
   };
 
