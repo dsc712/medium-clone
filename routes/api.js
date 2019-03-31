@@ -28,6 +28,10 @@ app.post("/login", login.login);
 
 app.get("/users", test.getUser);
 
+app.get("/users/:id", test.getUserWithId);
+
+app.get("/stories", story.stories);
+
 app.use(require("../app/middlewares/authentication")(config.app.key));
 
 // routes requiring authentication token
