@@ -5,6 +5,7 @@ import App from "../components/layouts/App";
 import Story from "../components/Story";
 import { Icon, Divider, BackTop, Row, Col } from "antd";
 
+
 export class Home extends Component {
   state = {
     page: 0,
@@ -96,8 +97,9 @@ export class Home extends Component {
               <BackTop visibilityHeight="200" />
             </div>
             <Divider>Stories</Divider>
-
+            
             {this.state.stories.map(story => (
+              
               <Story key={story.id} story={story} />
             ))}
 
