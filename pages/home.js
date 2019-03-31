@@ -97,18 +97,11 @@ export class Home extends Component {
               <BackTop visibilityHeight="200" />
             </div>
             <Divider>Stories</Divider>
-            <Row type="flex" justify="space-around">
-              {this.state.stories.map(story => (
-                <div>
-                  <Col span={12}>
-                    <Story key={story.id} story={story} />
-                  </Col>
-                  <Col span={12}>
-                    <Story key={story.id} story={story} />
-                  </Col>
-                </div>
-              ))}
-            </Row>
+
+            {this.state.stories.map(story => (
+              <Story key={story.id} story={story} />
+            ))}
+
             <Divider />
           </InfiniteScroll>
         </div>
