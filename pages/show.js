@@ -4,6 +4,7 @@ import axios from "axios";
 import App from "../components/layouts/App";
 import { Card } from "antd";
 const { Meta } = Card;
+import ReactHTMLParser from "react-html-parser";
 
 class show extends Component {
   state = {
@@ -32,7 +33,7 @@ class show extends Component {
               fontSize: "1.5em"
             }}
           >
-            <p>{body}</p>
+            <p>{ReactHTMLParser(body)}</p>
           </div>
         </div>
       </App>

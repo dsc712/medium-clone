@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Card, Avatar, Divider } from "antd";
 const { Meta } = Card;
 import Link from "next/link";
+import ReactHTMLParser from "react-html-parser";
 
 export class Story extends Component {
   render() {
@@ -16,7 +17,7 @@ export class Story extends Component {
           <Meta avatar={<Avatar src={featured_image} />} title={title} />
 
           <Divider />
-          {body}
+          {ReactHTMLParser(body)}
         </Card>
       </Link>
     );
