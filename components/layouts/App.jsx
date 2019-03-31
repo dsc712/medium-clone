@@ -37,7 +37,7 @@ class App extends Component {
         <Icon type="edit" />
         New Story
       </Menu.Item>
-      <Menu.Item key="3" onClick={e => this.props.router.push("/")}>
+      <Menu.Item key="3" onClick={e => this.props.router.push("/home")}>
         <Icon type="read" />
         Read Stories
       </Menu.Item>
