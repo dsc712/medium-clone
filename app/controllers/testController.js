@@ -31,3 +31,15 @@ exports.getUser = async (req, res) => {
         res.status(500).send({data: err.message});
     }
 };
+exports.getUserWithId = async (req, res) => {
+    try {
+        console.log("the rqe is");
+        console.log(req.params.id);
+
+        const user = await UserModel.query().where("id","=",(req.params.id));
+        res.send({data: user});
+
+    } catch (err) {
+        res.status(500).send({data: err.message});
+    }
+};

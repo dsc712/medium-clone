@@ -37,7 +37,7 @@ class App extends Component {
         <Icon type="edit" />
         New Story
       </Menu.Item>
-      <Menu.Item key="3" onClick={e => this.props.router.push("/home")}>
+      <Menu.Item key="3" onClick={e => this.props.router.push("/")}>
         <Icon type="read" />
         Read Stories
       </Menu.Item>
@@ -97,7 +97,7 @@ class App extends Component {
               width: "100%"
             }}
           >
-            <Link href={"/home"}>
+            <Link href={"/"}>
               <b>
                 <Icon
                   style={{ fontSize: "32px", cursor: "pointer" }}
