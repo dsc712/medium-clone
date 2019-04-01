@@ -46,13 +46,12 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const story = Story.query().patch({
+    const story = Story.query().patchAndFetchById( req.params.story, {
       title: req.body.title,
       featured_image: req.body.featured_image,
       body: req.body.story,
     }).where({
-      writer_id: req.user[0].id,
-      id: req.params.story
+      writer_id: req.user[0].id
     });
 
     return res.send({ story });
