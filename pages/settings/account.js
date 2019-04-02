@@ -13,18 +13,16 @@ import App from '../../components/layouts/App';
 class Account extends Component {
     state = {
         isUpdating: false,
+        tableLoading: true,
         user: null
     };
 
-    columns = [{
-       title: 'Id',
-       dataIndex: 'id',
-       key: 'id'
-    }, {
+    columns = [
+    {
         title: 'Story title',
         dataIndex: 'title',
         key: 'title',
-        render: (title) => this.renderTitle(title)
+        render: (title, record) => this.renderTitle(title, record)
     }, {
         title: 'Claps',
         dataIndex: 'claps',
@@ -39,7 +37,7 @@ class Account extends Component {
         const text = "Are you sure, you want to delete this story?";
         return (
             <div>
-                <Link as={`/story/${ record.id }/edit`} href={`/story/new?story=${ record.id}`}><a><Tooltip title="Edit Story"><Icon type="edit" /></Tooltip></a></Link>
+                <Link prefetch as={`/stories/${ record.id }`} href={`/story/new?story=${ record.id }`}><a><Tooltip title="Edit Story"><Icon type="edit" /></Tooltip></a></Link>
                 <Divider type="vertical" />
                 <a><Popconfirm title={text} onConfirm={this.confirm.bind(this, record.id)} okText="Yes" cancelText="No">
                     <Icon type="close" />
@@ -47,13 +45,13 @@ class Account extends Component {
             </div>
         )
     }
-    renderTitle = ( title ) => {
+    renderTitle = ( title, record ) => {
         if(title){
-            if( title.length > 20 ){
-                title = title.substring(0,20);
-                return <div>{ title }...</div>
+            if( title.length > 60 ){
+                title = title.substring(0,60);
+                return <Link href={`/show?id=${record.id}`}><a>{ title }...</a></Link>
             }
-            return <div>{ title }</div>
+            return <Link href={`/show?id=${record.id}`}><a>{ title }</a></Link>
         }
 
         return '-'
@@ -109,9 +107,11 @@ class Account extends Component {
 
     componentDidMount() {
         this.fetchProfile();
+        this.setState({ tableLoading: true });
         setTimeout(() => {
             this.fetchUserStories();
         }, 1000);
+        this.setState({ tableLoading: false });
     }
 
     render() {
@@ -140,7 +140,10 @@ class Account extends Component {
                     </Form>
                 </Card>
                 <Card style={{ marginTop: "20px"}}>
-                    <Table dataSource={ this.state.stories }  title={() => 'Your Stories'} columns={this.columns} />
+                    <Table loading={ this.state.tableLoading }
+                           dataSource={ this.state.stories }
+                           title={() => 'Your Stories'}
+                           columns={this.columns} />
                 </Card>
             </App>
         )

@@ -93,7 +93,7 @@ class App extends Component {
               color: "#fff",
               justifyContent: "space-between",
               position: "fixed",
-              zIndex: 1,
+              zIndex: 100,
               width: "100%"
             }}
           >

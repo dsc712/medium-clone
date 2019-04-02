@@ -46,7 +46,7 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const story = Story.query().patchAndFetchById( req.params.story, {
+    const story = await Story.query().patchAndFetchById( req.params.story, {
       title: req.body.title,
       featured_image: req.body.featured_image,
       body: req.body.story,

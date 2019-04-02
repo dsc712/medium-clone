@@ -136,6 +136,7 @@ class MyEditor extends Component {
         try {
             let res;
             if( this.props.story ) {
+                console.log("updating");
                 res = await axios.put(`/stories/${ this.props.story }`, { ...values, story: this.state.body } );
                 console.log(res.data.data);
             } else {
