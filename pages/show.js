@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "next/router";
 import axios from "axios";
 import App from "../components/layouts/App";
-import { Card } from "antd";
+import { Card, Icon } from "antd";
 const { Meta } = Card;
 import ReactHTMLParser from "react-html-parser";
 
@@ -22,9 +22,9 @@ class show extends Component {
     const { id, title, body, featured_image } = this.state.data;
     return (
       <App style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ textAlign: "center" }}>
-          <h1>{title}</h1>
-          <img alt="example" src={featured_image} />
+          <img style={{ "width": "100vw", "marginTop": "-40px", overflowX: "hidden" }} alt="example" src={featured_image} />
+          <Card style={{ textAlign: "center" }}>
+          <h1 style={{"fontSize": "3em" }}>{title}</h1>
           <div
             style={{
               textAlign: "justify",
@@ -33,9 +33,12 @@ class show extends Component {
               fontSize: "1.5em"
             }}
           >
-            <p>{ReactHTMLParser(body)}</p>
+            {ReactHTMLParser(body)}
           </div>
-        </div>
+        </Card>
+        <Card>
+            <Icon type="edit" />
+        </Card>
       </App>
     );
   }
