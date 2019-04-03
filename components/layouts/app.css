@@ -72,3 +72,61 @@
   animation-name: reveal;
   animation-direction: reverse;
 }
+
+/* Banner */
+.banner-user {
+  height: 80vh;
+  width: 100%;
+  position: absolute;
+  margin: 0 auto;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+}
+.banner-user-elem {
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  height: 500px;
+}
+.banner-user-elem .banner-user-title {
+  font-size: 32px;
+  top: 40%;
+}
+.banner-user-elem .banner-user-text {
+  font-size: 25px;
+  top: 40%;
+}
+.banner-anim-elem .bg {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+.second {
+  background-image: url("https://images.unsplash.com/photo-1511256213389-89a2bde94848?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+  width: 100%;
+}
+.first {
+  min-height: 200px;
+  background-image: url("https://images.unsplash.com/photo-1485498128961-422168ba5f87?ixlib=rb-1.2.1&auto=format&fit=crop&w=1102&q=80");
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+  background-attachment: fixed;
+  width: 100%;
+}
+.third {
+  min-height: 200px;
+  background-image: url("https://images.unsplash.com/flagged/photo-1551301622-6fa51afe75a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+  background-attachment: fixed;
+  width: 100%;
+}

@@ -42,6 +42,8 @@
     "nprogress": "^0.2.0",
     "objection": "^1.6.3",
     "prismjs": "^1.15.0",
+    "rc-banner-anim": "^2.2.2",
+    "rc-tween-one": "^2.3.4",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-html-parser": "^2.0.2",

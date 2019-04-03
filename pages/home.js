@@ -3,8 +3,8 @@ import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import App from "../components/layouts/App";
 import Story from "../components/Story";
-import { Icon, Divider, BackTop, Row, Col } from "antd";
-
+import { Icon, Divider, BackTop } from "antd";
+import Banner from "../components/Banner";
 
 export class Home extends Component {
   state = {
@@ -46,7 +46,8 @@ export class Home extends Component {
 
   render() {
     return (
-      <App style={{ display: "flex", flexDirection: "row" }}>
+      <App>
+        <Banner />
         <div className="stories">
           <InfiniteScroll
             dataLength={this.state.stories.length}
@@ -94,14 +95,26 @@ export class Home extends Component {
             }
           >
             <div>
-              <BackTop visibilityHeight="200" />
+              <BackTop visibilityHeight="400" />
             </div>
-            <Divider>Stories</Divider>
-            
-            {this.state.stories.map(story => (
-              
-              <Story key={story.id} story={story} />
-            ))}
+
+            <Divider style={{ fontSize: "40px", marginTop: "-10px" }}>
+              Stories
+            </Divider>
+            <div
+              style={{
+                padding: "6.5%",
+                overflowX: "hidden"
+              }}
+            >
+              {this.state.stories.map(story => (
+                <Story
+                  key={story.id}
+                  story={story}
+                  style={{ paddingTop: "50px" }}
+                />
+              ))}
+            </div>
 
             <Divider />
           </InfiniteScroll>
