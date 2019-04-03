@@ -67,7 +67,7 @@ export class Home extends Component {
               </div>
             }
             endMessage={
-              <div style={{ padding: "20px" }}>
+              <div style={{ padding: "5px" }}>
                 <p style={{ textAlign: "center" }}>
                   <div className="icons-list" style={{ padding: "20px" }}>
                     <Icon
@@ -98,21 +98,18 @@ export class Home extends Component {
               <BackTop visibilityHeight="400" />
             </div>
 
-            <Divider style={{ fontSize: "40px", marginTop: "-10px" }}>
+            <Divider style={{ fontSize: "40px", marginTop: "5px" }} id="read">
               Stories
             </Divider>
+
             <div
               style={{
-                padding: "6.5%",
-                overflowX: "hidden"
+                padding: "6%",
+                scrollBehavior: "smooth"
               }}
             >
               {this.state.stories.map(story => (
-                <Story
-                  key={story.id}
-                  story={story}
-                  style={{ paddingTop: "50px" }}
-                />
+                <Story key={story.id} story={story} />
               ))}
             </div>
 
