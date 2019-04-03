@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import { withRouter } from "next/router";
 import App from "../components/layouts/App";
 import {Card, Icon } from "antd";
 import moment from "moment";
@@ -54,4 +55,4 @@ class Show extends Component {
     }
 }
 
-export default Show;
+export default withRouter(Show);
