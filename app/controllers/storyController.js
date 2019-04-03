@@ -1,4 +1,5 @@
 const Story = require("../models/Story");
+const readingTime = require('reading-time');
 
 exports.stories = async (req, res) => {
   try {
@@ -30,12 +31,14 @@ exports.userStories = async (req,res) => {
 };
 
 exports.create = async (req, res) => {
+  let stats = readingTime(req.body.story);
   try {
     const story = await Story.query().insert({
       title: req.body.title,
       featured_image: req.body.featured_image,
       body: req.body.story,
-      writer_id: req.user[0].id
+      writer_id: req.user[0].id,
+      reading_time: stats.text
     });
 
     return res.send({ story });
