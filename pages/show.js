@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {withRouter} from "next/router";
 import axios from "axios";
 import App from "../components/layouts/App";
-import {Card, Icon, notification, Layout,Button} from "antd";
+import {Card, Icon, notification, Layout, Button, Radio, BackTop} from "antd";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -13,6 +13,11 @@ class show extends Component {
     state = {
         data: "", writer_id: "",
         username: "",
+        isBoookmarked:"",
+    };
+
+    addBookmark=()=>{i
+        this.setState({isBookmarked:"filled"});
     };
 
     async fetchUserData(writer_id) {
@@ -61,7 +66,12 @@ class show extends Component {
                     alignItems: 'stretch',
                 }}>
                     {/*side bar for clapls*/}
-                    <div style={{width: "5vw", display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                    <div style={{
+                        width: "5vw",
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center'
+                    }}>
                         <div>
                             <svg className="svgIcon-use" width="33" height="33">
                                 <path
@@ -71,7 +81,12 @@ class show extends Component {
                         </div>
 
                         <div>
-                            <Icon type="book" style={{fontSize: '32px', color: '#08c'}}/>
+                            <Button   size="large"
+                                      // type="primary"
+                                onClick={this.addBookmark}
+                                      shape="circle" >
+                                <Icon type="book" size="large"  theme={this.state.isBookmarked}/>
+                            </Button>
                         </div>
                     </div>
                     {/*heading, author and article body*/}
