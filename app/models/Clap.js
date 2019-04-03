@@ -30,4 +30,4 @@ class Clap extends Model {
     }
 }
 
-export default Response;
+module.exports = Clap;

@@ -1,16 +1,16 @@
 const cors = require("cors"),
-  bodyParser = require("body-parser"),
-  config = require("../configs");
+    bodyParser = require("body-parser"),
+    config = require("../configs");
 
 require("../app/models");
 const app = require("express").Router();
 app.use(
-  cors({
-    exposedHeaders: ["x-warning"]
-  })
+    cors({
+        exposedHeaders: ["x-warning"]
+    })
 );
 app.use(bodyParser.json());
-bodyParser.urlencoded({ extended: true });
+bodyParser.urlencoded({extended: true});
 const controller = path => require("../app/controllers/" + path);
 
 // requiring controller
@@ -19,6 +19,7 @@ const registration = controller("auth/registerController");
 const login = controller("auth/loginController");
 const profile = controller("profileController");
 const story = controller("storyController");
+const bookmark = controller("bookmarkController");
 
 // routes without authentication
 // auth routes
@@ -31,7 +32,8 @@ app.get("/users", test.getUser);
 app.get("/users/:id", test.getUserWithId);
 
 app.get("/stories", story.stories);
-app.get("/stories/:story", story.find );
+app.get("/stories/:story", story.find);
+
 
 app.use(require("../app/middlewares/authentication")(config.app.key));
 
@@ -43,13 +45,19 @@ app.put("/me/:user", profile.update);
 
 //story routes
 app.get("/stories", story.stories);
-app.get("/stories/:story", story.find );
-app.post("/stories", story.create );
-app.put("/stories/:story", story.update );
-app.get("/users/:user/stories/", story.userStories );
-app.delete("/users/:user/stories/:story", story.destroy );
+app.get("/stories/:story", story.find);
+app.post("/stories", story.create);
+app.put("/stories/:story", story.update);
+app.get("/users/:user/stories/", story.userStories);
+app.delete("/users/:user/stories/:story", story.destroy);
+
+app.get("/book", bookmark.getMyBookList);
+app.get("/book/:articleid", bookmark.find);
+
+app.delete("/book/delete/:id",bookmark.delete);
+
 app.all("*", (req, res) => {
-  res.status(404).send({ message: "The route you are looking is not found." });
+    res.status(404).send({message: "The route you are looking is not found."});
 });
 
 module.exports = app;
