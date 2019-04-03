@@ -97,7 +97,7 @@ class App extends Component {
               width: "100%"
             }}
           >
-            <Link href={"/"}>
+            <Link href={"/home"}>
               <b>
                 <Icon
                   style={{ fontSize: "32px", cursor: "pointer" }}
@@ -108,7 +108,7 @@ class App extends Component {
             {isAuthenticated ? (
               <Dropdown overlay={this.menu()}>
                 <Button style={{ marginTop: "15px" }}>
-                  {this.props.auth.user.name} <Icon type="logout" />
+                  {this.props.auth.user.name} <Icon type="down" />
                 </Button>
               </Dropdown>
             ) : (
