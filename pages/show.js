@@ -4,6 +4,7 @@ import axios from "axios";
 import App from "../components/layouts/App";
 import { Card, Icon } from "antd";
 const { Meta } = Card;
+import moment from "moment";
 import ReactHTMLParser from "react-html-parser";
 
 class show extends Component {
@@ -19,12 +20,18 @@ class show extends Component {
     });
   }
   render() {
-    const { id, title, body, featured_image } = this.state.data;
+    const { id, title, body, featured_image, reading_time, created_at } = this.state.data;
     return (
-      <App style={{ display: "flex", flexDirection: "row" }}>
+      <App style={{ display: "flex", flexDirection: "row", backgroundColor : "#fff" }}>
           <img style={{ "width": "100vw", "marginTop": "-40px", overflowX: "hidden" }} alt="example" src={featured_image} />
-          <Card style={{ textAlign: "center" }}>
-          <h1 style={{"fontSize": "3em" }}>{title}</h1>
+          <Card style={{  }}>
+              <Card style={{ "width": "85vw", "margin": "0 auto" }}>
+                  <h1 style={{"fontSize": "3em" }}>{title}</h1>
+                  <h4 style={{ "color": "#333333", "textAlign": "justify" }}>
+                      <span style={{ "marginRight": "20px" }}><Icon type="clock-circle" style={{ "marginRight": "3px"}}/>{ reading_time }</span>
+                      <span><Icon type="calendar" style={{ "marginRight": "3px"}} />{ moment(created_at).fromNow() }</span>
+                  </h4>
+              </Card>
           <div
             style={{
               textAlign: "justify",
