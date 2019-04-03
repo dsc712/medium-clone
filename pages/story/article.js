@@ -1,9 +1,8 @@
 import React, {Component} from "react";
 import axios from "axios";
 import App from "../../components/layouts/App";
-
+import { withRouter } from "next/router";
 import ReactHtmlParser from "react-html-parser";
-
 import Link from "next/link";
 import {Icon, Menu, Layout, notification, Card, Avatar, PageHeader} from "antd";
 
@@ -49,11 +48,17 @@ export class Article extends Component {
 
     async fetchArticle() {
         try {
-            const {data} = await axios.get(`/stories`);
+            let id = this.props.router.query.id;
+            // axios.get("/stories/" + id).then(res => {
+            //     this.setState({
+            //         data: res.data.story
+            //     });
+            // });
+            const {data} = await axios.get(`/stories/`+id);
 
-            const articleData = data.data.results[0];
             console.log("response data");
-            console.log(articleData);
+            console.log(data.story);
+            const articleData = data.story;
 
             const title = articleData.title;
             const body = articleData.body;
@@ -81,7 +86,7 @@ export class Article extends Component {
 
     showImg() {
         if (this.state.img_url)
-            return <img src={this.state.img_url} alt=""/>
+            return <img src={this.state.img_url} style={{  width: "85vw"}}/>
     }
 
     componentDidMount() {
@@ -91,11 +96,13 @@ export class Article extends Component {
     render() {
         return (
             <App style={{display: "flex", flexDirection: "column"}}>
+                {this.showImg()}
+                <div style={{display:'flex'}}>
 
                 <Layout className="article" style={{width: 1200}}>
 
                     <Sider width={100} style={{
-                        background: '#ffff',
+                        background: 'rgba(255,255,255,0)',
                         overflow: 'auto', height: '100%',
                         display: "flex",
                         justifyContent: "center",
@@ -139,9 +146,7 @@ export class Article extends Component {
                                     Published By:
                                     <br/>
                                     <Icon type="user"/> <b>{this.state.username} </b>
-                                    on {this.state.created_date}
-
-
+                                    on { Date(this.state.created_date)}
                                 </p>
                             </div>
                         </PageHeader>
@@ -150,15 +155,15 @@ export class Article extends Component {
 
                                 {ReactHtmlParser(this.state.content)}
 
-                                {this.showImg()}
                             </div>
                         </Content>
                     </Layout>
                 </Layout>
+                </div>
             </App>
         );
 
     }
 }
 
-export default Article;
+export default  withRouter(Article);

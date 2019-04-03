@@ -31,6 +31,7 @@ app.get("/users", test.getUser);
 app.get("/users/:id", test.getUserWithId);
 
 app.get("/stories", story.stories);
+app.get("/stories/:story", story.find );
 
 app.use(require("../app/middlewares/authentication")(config.app.key));
 
