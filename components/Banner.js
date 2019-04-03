@@ -1,6 +1,7 @@
 import React from "react";
 import BannerAnim, { Element } from "rc-banner-anim";
 import TweenOne from "rc-tween-one";
+import { Button, Icon } from "antd";
 import "rc-banner-anim/assets/index.css";
 const BgElement = Element.BgElement;
 
@@ -21,6 +22,11 @@ class Banner extends React.Component {
             animation={{ y: 30, opacity: 0, type: "from", delay: 500 }}
           >
             Write Your Story
+            <br />
+            <Button type="danger " href="/story/new" shape="round" size="large">
+              <Icon type="form" />
+              Write
+            </Button>
           </TweenOne>
         </Element>
         <Element prefixCls="banner-user-elem" key="1">
@@ -29,13 +35,16 @@ class Banner extends React.Component {
             className="banner-user-title"
             animation={{ y: 30, opacity: 0, type: "from", delay: 100 }}
           >
-            Let Others Read Your Story.
+            Read The Valuable Experiences.
           </TweenOne>
           <TweenOne
             className="banner-user-text"
             animation={{ y: 30, opacity: 0, type: "from", delay: 500 }}
           >
-            Write one
+            <Button type="danger " href="#read" shape="round" size="large">
+              <Icon type="read" />
+              Read
+            </Button>
           </TweenOne>
         </Element>
         <Element prefixCls="banner-user-elem" key="2">

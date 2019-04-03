@@ -75,8 +75,10 @@
 
 /* Banner */
 .banner-user {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   height: 80vh;
-  width: 100%;
+  width: 95%;
   position: absolute;
   margin: 0 auto;
   clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
