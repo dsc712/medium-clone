@@ -5,6 +5,7 @@ exports.stories = async (req, res) => {
   try {
     const story = await Story
       .query()
+      .eager('[ user ]')
       .page(Number(req.query.page) || 0, Number(req.query.count) || 5);
     res.send({ data: story });
   } catch(err) {

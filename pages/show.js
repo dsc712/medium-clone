@@ -24,7 +24,6 @@ class Show extends Component {
 
     render() {
         const {id, title, body, featured_image, reading_time, created_at, user } = this.state.data;
-        console.log("writer", user);
         return (
             <App style={{display: "flex", flexDirection: "row", backgroundColor: "#fff"}}>
                 <img style={{"width": "100vw", "marginTop": "-40px", overflowX: "hidden"}} alt="example"

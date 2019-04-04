@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Card, Avatar, Divider } from "antd";
+import { Card, Avatar, Divider, Icon } from "antd";
 const { Meta } = Card;
 import Link from "next/link";
 import ReactHTMLParser from "react-html-parser";
+import moment from 'moment';
 
 export class Story extends Component {
   state = {
@@ -19,13 +20,28 @@ export class Story extends Component {
 
 
     render() {
-    const { title, body, featured_image, id } = this.props.story;
+    const { title, featured_image, id, user, created_at, reading_time } = this.props.story;
+    console.log(user);
     return (
       <Link href={`/show?id=${id}`}>
         <Card
           hoverable
           style={{ width: "85vw", marginTop: "15px" }}
           loading={this.props.loading}
+          actions={[
+              <span>
+                <span style={{ marginRight: "15px"}}>
+                      { user && user.photo ?<Avatar src={ user && user.photo } /> : <Avatar style={{ backgroundColor: "#f56a00"}} icon="user"/> }
+                </span>
+                  Written by { user && user.name }
+              </span>,
+              <span>
+                  <Icon type="calendar" /> { moment(created_at).fromNow() }
+              </span>,
+              <span>
+                  <Icon type="clock-circle" /> { reading_time }
+              </span>
+              ]}
         >
           <Meta avatar={<Avatar src={featured_image} />} title={title} />
 
