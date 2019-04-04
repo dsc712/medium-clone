@@ -10,8 +10,6 @@ class Show extends Component {
     state = {
         data: "",
         isBookmarked: false,
-        writer: "Ashwani",
-
     };
 
     componentDidMount() {
@@ -21,27 +19,7 @@ class Show extends Component {
             this.setState({
                 data: res.data.story,
             });
-
         });
-
-    }
-
-    async fetchUserData(writer_id) {
-        try {
-            const {data} = await axios.get(`/users/` + writer_id).then(res => {
-                this.setState({
-                    writer: res.data.user
-                });
-            });
-            return this.state.writer.name;
-        } catch (err) {
-            if (err.response) {
-                notification.error({message: err.response.data.message});
-            } else {
-                notification.error({message: err.message});
-                throw err;
-            }
-        }
     }
 
     changeBookmark = () => {
