@@ -33,11 +33,9 @@ exports.getUser = async (req, res) => {
 };
 exports.getUserWithId = async (req, res) => {
     try {
-        console.log("the rqe is");
-        console.log(req.params.id);
 
-        const user = await UserModel.query().where("id","=",(req.params.id));
-        res.send({data: user});
+        const user = await UserModel.query().where("id","=",(req.params.id)).first();
+        res.send({user});
 
     } catch (err) {
         res.status(500).send({data: err.message});

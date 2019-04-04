@@ -1,14 +1,17 @@
 import React, {Component} from "react";
 import axios from "axios";
-import { withRouter } from "next/router";
+import {withRouter} from "next/router";
 import App from "../components/layouts/App";
-import {Card, Icon, Affix, Row, Col } from "antd";
+import {Card, Icon, Affix, Row, Col, Button, notification} from "antd";
 import moment from "moment";
 import ReactHTMLParser from "react-html-parser";
 
 class Show extends Component {
     state = {
-        data: ""
+        data: "",
+        isBookmarked: false,
+        writer: "Ashwani",
+
     };
 
     componentDidMount() {
@@ -17,8 +20,52 @@ class Show extends Component {
             this.setState({
                 data: res.data.story
             });
+
         });
+
     }
+
+    async fetchUserData(writer_id) {
+        try {
+            const {data} = await axios.get(`/users/` + writer_id).then(res => {
+                this.setState({
+                    writer: res.data.user
+                });
+            });
+            return this.state.writer.name;
+        } catch (err) {
+            if (err.response) {
+                notification.error({message: err.response.data.message});
+            } else {
+                notification.error({message: err.message});
+                throw err;
+            }
+        }
+    }
+
+    changeBookmark = () => {
+        this.setState(state => {
+            return {
+                isBookmarked: !state.isBookmarked,
+            }
+        });
+        console.log("book hai?"+this.state.isBookmarked);
+        if (this.state.isBookmarked == true) {
+            this.addBookmark
+        }
+    };
+    isBookmarked = () => {
+        if (this.state.isBookmarked == false) {
+            return "outlined";
+        }
+        return "filled";
+    };
+
+    addBookmark = async () => {
+        const {data} = await axios.put("/book/add/" + this.state.data.id).then(res=>{
+            notification.success({message:"ho gaya bhai"});
+        });
+    };
 
     render() {
         const {id, title, body, featured_image, reading_time, created_at} = this.state.data;
@@ -27,13 +74,23 @@ class Show extends Component {
                 <img style={{"width": "100vw", "marginTop": "-40px", overflowX: "hidden"}} alt="example"
                      src={featured_image}/>
                 <Card>
+
                     <Row>
                         <Col span={1}>
                             <Affix offsetTop={200}>
-                                <div style={{ height: "30vh", fontSize: "24px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                                    <Icon size="large" type="share-alt" />
-                                    <Icon size="large" type="facebook" />
-                                    <Icon size="large" type="twitter" />
+                                <div style={{
+                                    height: "30vh",
+                                    fontSize: "24px",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "space-between"
+                                }}>
+                                    <Icon type="book" size="large" theme={this.isBookmarked()}
+                                          onClick={this.changeBookmark}
+                                          style={{color: '#000'}}/>
+                                    <Icon size="large" type="share-alt"/>
+                                    <Icon size="large" type="facebook"/>
+                                    <Icon size="large" type="twitter" theme="outlined"/>
                                 </div>
                             </Affix>
                         </Col>
@@ -41,11 +98,15 @@ class Show extends Component {
                         <Col span={23}>
                             <Card style={{"width": "85vw", "margin": "0 auto"}}>
                                 <h1 style={{"fontSize": "3em"}}>{title}</h1>
+                                <h4 tyle={{"color": "blue", "textAlign": "justify"}}>
+                                    <Icon type="user"/> By :
+                                    <b><i>{this.state.writer.name}</i></b>
+                                </h4>
                                 <h4 style={{"color": "#333333", "textAlign": "justify"}}>
                                 <span style={{"marginRight": "20px"}}>
                                     <Icon type="clock-circle" style={{"marginRight": "3px"}}/>{reading_time}
                                 </span>
-                                        <span>
+                                    <span>
                                     <Icon type="calendar" style={{"marginRight": "3px"}}/>{moment(created_at).fromNow()}
                                 </span>
                                 </h4>
@@ -61,7 +122,7 @@ class Show extends Component {
                             >
                                 {ReactHTMLParser(body)}
                             </div>
-                            </Col>
+                        </Col>
                     </Row>
                 </Card>
 

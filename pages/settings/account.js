@@ -19,7 +19,7 @@ class Account extends Component {
 
     columns = [
     {
-        title: 'Story title',
+        title: 'Story Title',
         dataIndex: 'title',
         key: 'title',
         render: (title, record) => this.renderTitle(title, record)
@@ -33,12 +33,38 @@ class Account extends Component {
         render: (a,record) => this.renderAction(record),
     }];
 
+    BookmarkColumns = [
+        {
+            title: 'Story Title',
+            dataIndex: 'title',
+            key: 'title',
+            render: (title, record) => this.renderTitle(title, record)
+        }, {
+            title: 'Claps',
+            dataIndex: 'claps',
+            key: 'claps'
+        },{
+            title: 'Action',
+            key: 'action',
+            render: (a,record) => this.renderActionDelete(record),
+        }];
+
     renderAction(record) {
         const text = "Are you sure, you want to delete this story?";
         return (
             <div>
                 <Link prefetch as={`/stories/${ record.id }`} href={`/story/new?story=${ record.id }`}><a><Tooltip title="Edit Story"><Icon type="edit" /></Tooltip></a></Link>
                 <Divider type="vertical" />
+                <a><Popconfirm title={text} onConfirm={this.confirm.bind(this, record.id)} okText="Yes" cancelText="No">
+                    <Icon type="close" />
+                </Popconfirm></a>
+            </div>
+        )
+    }
+    renderActionDelete(record) {
+        const text = "You wanna delete this bookmark?";
+        return (
+            <div>
                 <a><Popconfirm title={text} onConfirm={this.confirm.bind(this, record.id)} okText="Yes" cancelText="No">
                     <Icon type="close" />
                 </Popconfirm></a>
@@ -104,7 +130,10 @@ class Account extends Component {
         const  { data }  = await axios.get(`/users/${this.state.user.id}/stories`);
         this.setState({ stories: data.stories });
     }
-
+    async fetchUserBookmarks() {
+        const  { data }  = await axios.get(`/book`);
+        this.setState({ bookmark: data.data });
+    }
     componentDidMount() {
         this.fetchProfile();
         this.setState({ tableLoading: true });
@@ -144,6 +173,12 @@ class Account extends Component {
                            dataSource={ this.state.stories }
                            title={() => 'Your Stories'}
                            columns={this.columns} />
+                </Card>
+                <Card style={{ marginTop: "20px"}}>
+                    <Table loading={ this.state.tableLoading }
+                           dataSource={ this.state.bookmark }
+                           title={() => 'Your Bookmarks'}
+                           columns={this.BookmarkColumns} />
                 </Card>
             </App>
         )
