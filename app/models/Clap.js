@@ -19,8 +19,10 @@ class Clap extends Model {
         const story = {
             relation: Model.BelongsToOneRelation,
             modelCLass: Story,
-            from: 'claps.story_id',
-            to: 'stories.id'
+            join: {
+                from: 'claps.story_id',
+                to: 'stories.id'
+            }
         };
 
         return {

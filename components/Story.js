@@ -17,6 +17,7 @@ export class Story extends Component {
       }
   }
 
+
     render() {
     const { title, body, featured_image, id } = this.props.story;
     return (

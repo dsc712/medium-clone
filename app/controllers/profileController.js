@@ -7,7 +7,8 @@ exports.update = async ( req, res ) => {
     try {
         const data = await User.query().patch({
             name: req.body.name,
-            email: req.body.email
+            email: req.body.email,
+            photo: req.body.photo
         }).where({ id: req.params.user });
 
         return res.send({

@@ -2,7 +2,7 @@ import react, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 import { withRouter } from "next/router";
-import { Layout, Icon, Dropdown, Menu, Button } from "antd";
+import { Layout, Icon, Dropdown, Menu, Button, Avatar } from "antd";
 import Link from "next/link";
 import axios from "axios";
 const { Header, Content, Footer } = Layout;
@@ -107,8 +107,9 @@ class App extends Component {
             </Link>
             {isAuthenticated ? (
               <Dropdown overlay={this.menu()}>
-                <Button style={{ marginTop: "15px" }}>
-                  {this.props.auth.user.name} <Icon type="down" />
+                <Button style={{ marginTop: "15px", padding: "5px" }}>
+                  <span>{ this.props.auth.user.photo ? <Avatar size={"small"} src={ this.props.auth.user.photo } />  : <Avatar size={"small"} style={{ backgroundColor: "#f56a00"}} icon="user" />}</span>
+                  <span style={{ marginLeft: "10px", marginRight: "10px" }}>{ this.props.auth.user.name } <Icon type="down" /></span>
                 </Button>
               </Dropdown>
             ) : (
