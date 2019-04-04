@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import axios from "axios";
 import { withRouter } from "next/router";
 import App from "../components/layouts/App";
-import {Card, Icon, Affix, Row, Col } from "antd";
+import {Card, Icon, Affix, Row, Col, Avatar } from "antd";
 import moment from "moment";
 import ReactHTMLParser from "react-html-parser";
 
@@ -14,14 +14,17 @@ class Show extends Component {
     componentDidMount() {
         let id = this.props.router.query.id;
         axios.get("/stories/" + id).then(res => {
+            console.log(res.data);
             this.setState({
-                data: res.data.story
+                data: res.data.story,
             });
         });
+
     }
 
     render() {
-        const {id, title, body, featured_image, reading_time, created_at} = this.state.data;
+        const {id, title, body, featured_image, reading_time, created_at, user } = this.state.data;
+        console.log("writer", user);
         return (
             <App style={{display: "flex", flexDirection: "row", backgroundColor: "#fff"}}>
                 <img style={{"width": "100vw", "marginTop": "-40px", overflowX: "hidden"}} alt="example"
@@ -48,6 +51,10 @@ class Show extends Component {
                                         <span>
                                     <Icon type="calendar" style={{"marginRight": "3px"}}/>{moment(created_at).fromNow()}
                                 </span>
+                                </h4>
+                                <h4 style={{ "marginTop": "25px"}}>
+                                    { user && user.photo ? <Avatar src={ user.photo } />  : <Avatar style={{ backgroundColor: "#f56a00"}} icon="user" />}
+                                   <span> { user && user.name } ( {user && user.email}  ) </span>
                                 </h4>
                             </Card>
 

@@ -11,13 +11,15 @@ class Publisher extends Model {
     const user = {
       relation: Model.ManyToManyRelation,
       modelClass: User,
-      from: "publishers.user_id",
-      through:{
-         from:'Publisher_Join_User.publisherID',
-         to:'Publisher_Join_User.userID',
-         modelClass:Publisher_Join_User
-      },
-      to: "users.id"
+      join: {
+        from: "publishers.user_id",
+        through:{
+          from:'Publisher_Join_User.publisherID',
+          to:'Publisher_Join_User.userID',
+          modelClass:Publisher_Join_User
+        },
+        to: "users.id"
+      }
     };
 
     return {

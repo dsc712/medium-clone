@@ -96,7 +96,8 @@ class Account extends Component {
         console.log( this.state );
         this.props.form.setFieldsValue({
             name: data.name,
-            email: data.email
+            email: data.email,
+            photo: data.photo
         });
     }
 
@@ -133,6 +134,13 @@ class Account extends Component {
                                     rules: [{ required: true }]
                                 })(
                                     <Input placeholder={"Email"}/>
+                                )
+                            }
+                        </Item>
+                        <Item label="Profile Picture">
+                            {
+                                decorator('photo', {})(
+                                    <Input placeholder="Paste Url for your profile picture"/>
                                 )
                             }
                         </Item>

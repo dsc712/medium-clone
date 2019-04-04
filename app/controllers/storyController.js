@@ -14,7 +14,7 @@ exports.stories = async (req, res) => {
 
 exports.find = async (req, res ) => {
   try {
-    const story = await Story.query().where({ id: req.params.story}).first();
+    const story = await Story.query().eager('[ user ]').where({ id: req.params.story}).first();
     return res.send({ story });
   } catch(err) {
     res.status(500).send({ message: err.message });
