@@ -8,7 +8,8 @@ import ReactHTMLParser from "react-html-parser";
 
 class Show extends Component {
     state = {
-        data: ""
+        data: "",
+        isBookmarked: false,
     };
 
     componentDidMount() {
@@ -19,8 +20,31 @@ class Show extends Component {
                 data: res.data.story,
             });
         });
-
     }
+
+    changeBookmark = () => {
+        this.setState(state => {
+            return {
+                isBookmarked: !state.isBookmarked,
+            }
+        });
+        console.log("book hai?"+this.state.isBookmarked);
+        if (this.state.isBookmarked == true) {
+            this.addBookmark
+        }
+    };
+    isBookmarked = () => {
+        if (this.state.isBookmarked == false) {
+            return "outlined";
+        }
+        return "filled";
+    };
+
+    addBookmark = async () => {
+        const {data} = await axios.put("/book/add/" + this.state.data.id).then(res=>{
+            notification.success({message:"ho gaya bhai"});
+        });
+    };
 
     render() {
         const {id, title, body, featured_image, reading_time, created_at, user } = this.state.data;
@@ -32,10 +56,19 @@ class Show extends Component {
                     <Row>
                         <Col span={1}>
                             <Affix offsetTop={200}>
-                                <div style={{ height: "30vh", fontSize: "24px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                                    <Icon size="large" type="share-alt" />
-                                    <Icon size="large" type="facebook" />
-                                    <Icon size="large" type="twitter" />
+                                <div style={{
+                                    height: "30vh",
+                                    fontSize: "24px",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "space-between"
+                                }}>
+                                    <Icon type="book" size="large" theme={this.isBookmarked()}
+                                          onClick={this.changeBookmark}
+                                          style={{color: '#000'}}/>
+                                    <Icon size="large" type="share-alt"/>
+                                    <Icon size="large" type="facebook"/>
+                                    <Icon size="large" type="twitter" theme="outlined"/>
                                 </div>
                             </Affix>
                         </Col>
@@ -67,7 +100,7 @@ class Show extends Component {
                             >
                                 {ReactHTMLParser(body)}
                             </div>
-                            </Col>
+                        </Col>
                     </Row>
                 </Card>
 

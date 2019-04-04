@@ -53,8 +53,8 @@ app.delete("/users/:user/stories/:story", story.destroy);
 
 app.get("/book", bookmark.getMyBookList);
 app.get("/book/:articleid", bookmark.find);
-
-app.delete("/book/delete/:id",bookmark.delete);
+app.post("/book/add/:articleid", bookmark.add);
+app.delete("/book/delete/:id", bookmark.delete);
 
 app.all("*", (req, res) => {
     res.status(404).send({message: "The route you are looking is not found."});
