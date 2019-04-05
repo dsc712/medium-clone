@@ -49,8 +49,8 @@ class Show extends Component {
     render() {
         const {id, title, body, featured_image, reading_time, created_at, user } = this.state.data;
         return (
-            <App style={{display: "flex", flexDirection: "row", backgroundColor: "#fff"}}>
-                <img style={{"width": "100vw", "marginTop": "-40px", overflowX: "hidden"}} alt="example"
+            <App style={{display: "flex", flexDirection: "row", backgroundColor: "#fff !important"}}>
+                <img style={{"width": "100%", "marginTop": "-40px", overflowX: "hidden"}} alt="example"
                      src={featured_image}/>
                 <Card>
                     <Row>
@@ -61,7 +61,8 @@ class Show extends Component {
                                     fontSize: "24px",
                                     display: "flex",
                                     flexDirection: "column",
-                                    justifyContent: "space-between"
+                                    justifyContent: "space-between",
+                                    marginLeft: "80px"
                                 }}>
                                     <Icon type="book" size="large" theme={this.isBookmarked()}
                                           onClick={this.changeBookmark}
@@ -74,7 +75,7 @@ class Show extends Component {
                         </Col>
 
                         <Col span={23}>
-                            <Card style={{"width": "85vw", "margin": "0 auto"}}>
+                            <Card style={{"width": "70vw", "margin": "0 auto"}}>
                                 <h1 style={{"fontSize": "3em"}}>{title}</h1>
                                 <h4 style={{"color": "#333333", "textAlign": "justify"}}>
                                 <span style={{"marginRight": "20px"}}>
@@ -95,6 +96,7 @@ class Show extends Component {
                                     textAlign: "justify",
                                     margin: "auto",
                                     padding: "100px",
+                                    width: "70vw",
                                     fontSize: "1.5em"
                                 }}
                             >
@@ -103,12 +105,6 @@ class Show extends Component {
                         </Col>
                     </Row>
                 </Card>
-
-                <Card>
-                    <Icon type="edit"/>
-                </Card>
-
-
             </App>
         );
     }
