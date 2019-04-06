@@ -7,7 +7,7 @@ const { Meta } = Card;
 import moment from "moment";
 import ReactHTMLParser from "react-html-parser";
 import Response from "../components/Response";
-import Comment from "../components/Comment";
+
 import ShowComments from "../components/ShowComments";
 
 class Show extends Component {
@@ -174,7 +174,6 @@ class Show extends Component {
             avatar={<Avatar src={featured_image} />}
             title={this.state.LoggedUser.name}
           />
-          <Comment comments={this.state.comments} />
           <Response info={this.state} />
         </Card>
         <div>
