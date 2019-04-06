@@ -1,23 +1,28 @@
-import { Model } from 'objection';
+const { Model } = require("objection");
 
 class Response extends Model {
-    static get tableName() {
-        return 'responses';
-    }
+  $beforeInsert() {
+    this.created_at = new Date();
+  }
+  static get tableName() {
+    return "responses";
+  }
 
-    static get relationMappings() {
-        const Story = require('./Story');
-        const story = {
-            relation: Model.BelongsToOneRelation,
-            modelClass: Story,
-            from: 'responses.story_id',
-            to: 'stories.id'
-        };
+  static get relationMappings() {
+    const Story = require("./Story");
+    const story = {
+      relation: Model.BelongsToOneRelation,
+      modelClass: Story,
+      join: {
+        from: "responses.story_id",
+        to: "stories.id"
+      }
+    };
 
-        return {
-            story
-        }
-    }
+    return {
+      story
+    };
+  }
 }
 
-export default Response;
+module.exports = Response;

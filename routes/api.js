@@ -1,16 +1,16 @@
 const cors = require("cors"),
-    bodyParser = require("body-parser"),
-    config = require("../configs");
+  bodyParser = require("body-parser"),
+  config = require("../configs");
 
 require("../app/models");
 const app = require("express").Router();
 app.use(
-    cors({
-        exposedHeaders: ["x-warning"]
-    })
+  cors({
+    exposedHeaders: ["x-warning"]
+  })
 );
 app.use(bodyParser.json());
-bodyParser.urlencoded({extended: true});
+bodyParser.urlencoded({ extended: true });
 const controller = path => require("../app/controllers/" + path);
 
 // requiring controller
@@ -20,10 +20,11 @@ const login = controller("auth/loginController");
 const profile = controller("profileController");
 const story = controller("storyController");
 const bookmark = controller("bookmarkController");
+const response = controller("responseController");
 
 // routes without authentication
 // auth routes
-
+// app.post("/response", response.add);
 app.post("/register", registration.register);
 app.post("/login", login.login);
 
@@ -33,7 +34,6 @@ app.get("/users/:id", test.getUserWithId);
 
 app.get("/stories", story.stories);
 app.get("/stories/:story", story.find);
-
 
 app.use(require("../app/middlewares/authentication")(config.app.key));
 
@@ -56,8 +56,12 @@ app.get("/book/:articleid", bookmark.find);
 app.post("/book/add/:articleid", bookmark.add);
 app.delete("/book/delete/:id", bookmark.delete);
 
+//response routes
+app.post("/response", response.add);
+app.get("/response", response.get);
+
 app.all("*", (req, res) => {
-    res.status(404).send({message: "The route you are looking is not found."});
+  res.status(404).send({ message: "The route you are looking is not found." });
 });
 
 module.exports = app;
