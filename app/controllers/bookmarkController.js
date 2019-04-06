@@ -34,6 +34,7 @@ exports.find = async (req, res) => {
         res.status(500).send({message: err.message});
     }
 };
+
 exports.add = async (req, res) => {
     try {
         const userObj = {...req.user[0].toJSON()};
@@ -44,16 +45,20 @@ exports.add = async (req, res) => {
         });
 
         return res.send({
-            data,
+            data: data,
             message: "Bookmark added successfully"
         })
     } catch (err) {
         res.status(500).send({message: err.message});
     }
 };
-exports.delete = async (req, res) => {
+
+exports.remove = async (req, res) => {
     try {
-        const data = await Bookmark.query().deleteById(req.params.id);
+        const userObj = {...req.user[0].toJSON()};
+        const data = await Bookmark.query().delete()
+            .where({article_id: req.params.articleid})
+            .andWhere({user_id: userObj.id});
 
         return res.send({
             data,

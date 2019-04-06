@@ -54,7 +54,7 @@ app.delete("/users/:user/stories/:story", story.destroy);
 app.get("/book", bookmark.getMyBookList);
 app.get("/book/:articleid", bookmark.find);
 app.post("/book/add/:articleid", bookmark.add);
-app.delete("/book/delete/:id", bookmark.delete);
+app.delete("/book/delete/:articleid", bookmark.remove);
 
 //response routes
 app.post("/response", response.add);
