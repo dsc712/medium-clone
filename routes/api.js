@@ -21,6 +21,7 @@ const profile = controller("profileController");
 const story = controller("storyController");
 const bookmark = controller("bookmarkController");
 const response = controller("responseController");
+const clap = controller("clapController");
 
 // routes without authentication
 // auth routes
@@ -61,6 +62,9 @@ app.post("/response", response.add);
 app.get("/response", response.get);
 app.get("/response/:id", response.find);
 // app.get("/response/:story_id", response.find);
+
+app.put("/stories/:story/clap", clap.update );
+app.get("/stories/:story/clap", clap.index );
 
 app.all("*", (req, res) => {
   res.status(404).send({ message: "The route you are looking is not found." });
