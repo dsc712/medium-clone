@@ -24,7 +24,7 @@ const response = controller("responseController");
 
 // routes without authentication
 // auth routes
-// app.post("/response", response.add);
+
 app.post("/register", registration.register);
 app.post("/login", login.login);
 
@@ -59,6 +59,8 @@ app.delete("/book/delete/:articleid", bookmark.remove);
 //response routes
 app.post("/response", response.add);
 app.get("/response", response.get);
+app.get("/response/:id", response.find);
+// app.get("/response/:story_id", response.find);
 
 app.all("*", (req, res) => {
   res.status(404).send({ message: "The route you are looking is not found." });

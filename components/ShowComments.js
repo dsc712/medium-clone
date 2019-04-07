@@ -1,18 +1,43 @@
 import React, { Component } from "react";
-import { Divider, Card } from "antd";
+import { Divider, Card, Avatar } from "antd";
+import Axios from "axios";
 const { Meta } = Card;
+import moment from "moment";
 
-class ShowComments extends Component {
+class Showcomments extends Component {
+  state = {
+    user: ""
+  };
+  componentDidMount() {
+    let id = this.props.comment.created_by;
+    Axios.get("/users/" + id).then(res => {
+      this.setState({
+        user: res.data.user
+      });
+      console.log("user", res);
+    });
+  }
   render() {
-    const { id, name, body } = this.props.info;
-    console.log("op", this.props.info);
+    const { created_at, name, body, user } = this.props.comment;
+
+    console.log(this.props.comment);
     return (
-      <Card>
-        <Meta title={id} />
+      <Card style={{ width: "75%", margin: "10px auto", borderRadius: "10px" }}>
+        <Meta
+          avatar={
+            user && user.photo ? (
+              <Avatar src={user.photo} />
+            ) : (
+              <Avatar style={{ backgroundColor: "#f56a00" }} icon="user" />
+            )
+          }
+          title={this.state.user.name}
+        />
+        <h6>{moment(created_at).fromNow()}</h6>
         <Divider />
         <p>{body}</p>
       </Card>
     );
   }
 }
-export default ShowComments;
+export default Showcomments;

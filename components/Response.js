@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
-
+import { Input, Button } from "antd";
+const { TextArea } = Input;
 class Response extends Component {
   state = {
     comment: ""
@@ -13,7 +14,6 @@ class Response extends Component {
   };
   handleSubmit = async e => {
     e.preventDefault();
-    console.log("id:", this.props);
     const cmt = await axios.post("/response", {
       comment: this.state.comment,
       storyId: this.props.info.data.id,
@@ -27,8 +27,32 @@ class Response extends Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
+      <div style={{ width: "80%", margin: "5px auto" }}>
+        <TextArea
+          rows={8}
+          onSubmit={this.handleSubmit}
+          onChange={this.handleChange}
+          value={this.state.comment}
+          placeholder="Comment on this..."
+          style={{ width: "80%", margin: "5px auto" }}
+        />
+        <br />
+        <Button
+          type="danger"
+          size="large"
+          htmlType="submit"
+          onClick={this.handleSubmit}
+        >
+          Post
+        </Button>
+      </div>
+    );
+  }
+}
+
+export default Response;
+{
+  /* <form onSubmit={this.handleSubmit}>
           <input
             name="response"
             type="text"
@@ -36,10 +60,6 @@ class Response extends Component {
             value={this.state.comment}
             placeholder="Comment on this..."
           />
-        </form>
-      </div>
-    );
-  }
+          <button type="submit">Post</button>
+        </form> */
 }
-
-export default Response;

@@ -1,32 +1,34 @@
 const Story = require("../models/Story");
-const readingTime = require('reading-time');
+const readingTime = require("reading-time");
 
 exports.stories = async (req, res) => {
   try {
-    const story = await Story
-      .query()
-      .eager('[ user ]')
+    const story = await Story.query()
+      .eager("[ user ]")
       .page(Number(req.query.page) || 0, Number(req.query.count) || 5);
     res.send({ data: story });
-  } catch(err) {
+  } catch (err) {
     res.status(500).send({ message: err.message });
   }
 };
 
-exports.find = async (req, res ) => {
+exports.find = async (req, res) => {
   try {
-    const story = await Story.query().eager('[ user ]').where({ id: req.params.story}).first();
+    const story = await Story.query()
+      .eager("[ user ]")
+      .where({ id: req.params.story })
+      .first();
     return res.send({ story });
-  } catch(err) {
+  } catch (err) {
     res.status(500).send({ message: err.message });
   }
 };
 
-exports.userStories = async (req,res) => {
+exports.userStories = async (req, res) => {
   try {
     const stories = await Story.query().where({ writer_id: req.params.user });
-    return res.send({ stories })
-  } catch(err) {
+    return res.send({ stories });
+  } catch (err) {
     res.status(500).send({ message: err.message });
   }
 };
@@ -43,32 +45,37 @@ exports.create = async (req, res) => {
     });
 
     return res.send({ story });
-  } catch(err) {
-      res.status(500).send({ message: err.message });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
   }
 };
 
 exports.update = async (req, res) => {
   try {
-    const story = await Story.query().patchAndFetchById( req.params.story, {
-      title: req.body.title,
-      featured_image: req.body.featured_image,
-      body: req.body.story,
-    }).where({
-      writer_id: req.user[0].id
-    });
+    const story = await Story.query()
+      .patchAndFetchById(req.params.story, {
+        title: req.body.title,
+        featured_image: req.body.featured_image,
+        body: req.body.story
+      })
+      .where({
+        writer_id: req.user[0].id
+      });
 
     return res.send({ story });
-  } catch(err) {
+  } catch (err) {
     res.status(500).send({ message: err.message });
   }
 };
 
-exports.destroy = async (req, res ) => {
+exports.destroy = async (req, res) => {
   try {
-    const story = await Story.query().delete().where({ writer_id: req.params.user }).andWhere({ id: req.params.story });
-    return res.send({ story, message: "Story deleted successfully"});
-  } catch(err) {
+    const story = await Story.query()
+      .delete()
+      .where({ writer_id: req.params.user })
+      .andWhere({ id: req.params.story });
+    return res.send({ story, message: "Story deleted successfully" });
+  } catch (err) {
     res.status(500).send({ message: err.message });
   }
 };
