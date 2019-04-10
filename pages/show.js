@@ -25,7 +25,7 @@ class Show extends Component {
         data: "",
         isBookmarked: false,
         count: 0,
-        totalCount: 100,
+        totalCount: 0,
         isClicked: false,
         comments: [],
         LoggedUser: "",
@@ -44,23 +44,29 @@ class Show extends Component {
     }
 
     componentDidMount() {
-        this.count = this.state.count;
         let id = this.props.router.query.id;
         axios.get("/stories/" + id).then(res => {
-            console.log(res.data);
             this.setState({
                 data: res.data.story,
                 ok: true,
-                totalCount: res.data.story.claps
+                totalCount: Number(res.data.story.claps)
             });
         });
 
         axios.get(`/stories/${id}/clap`).then((res) => {
-            this.setState({ count: res.data.claps && res.data.claps.count });
+            this.setState({ count: res.data.claps ? res.data.claps.count : 0 });
+            console.log( res.data.claps );
+            if( res.data.claps === 0 ) {
+                this.setState({ isClicked: false });
+            } else {
+                this.setState({ isClicked: true });
+            }
+            console.log( this.state );
+            this.count = this.state.count;
         });
-
-        this.findBookmark();
-        this.getResponse(id);
+        //
+        // this.findBookmark();
+        // this.getResponse(id);
     }
 
 
@@ -146,7 +152,9 @@ class Show extends Component {
 
     sendClapRequest = async (count) => {
         let id = this.props.router.query.id;
-        const claps = await axios.put(`/stories/${ id }/clap`, {count, totalCount: this.state.totalCount + count } );
+        console.log("final count", count);
+        const { data } = await axios.put(`/stories/${ id }/clap`, { count } );
+        console.log( data.data.claps );
     };
 
     clapAPIDebounced = AwesomeDebouncePromise( this.sendClapRequest, 500);
@@ -182,6 +190,9 @@ class Show extends Component {
                                                   secondaryColor: '#123456'
                                               }}
                                           />
+                                      </div>
+                                      <div style={{ paddingLeft: "12px", fontSize: "0.8em" }}>
+                                              <h6 style={{ color: "#999"}}> see claps</h6>
                                       </div>
                                       <Divider/>
                                       <Icon type="book" size="large"
@@ -227,23 +238,25 @@ class Show extends Component {
                           </Col>
                       </Row>
                   </Card>
-                  <Card
-                      style={{width: "75%", margin: "10px auto", borderRadius: "10px"}}
-                  >
-                      <h1>Comments</h1>
-                      <Divider/>
-                      <Meta
-                          avatar={<Avatar src={featured_image}/>}
-                          title={this.state.LoggedUser.name}
-                      />
+                  <Card>
+                      <Card
+                          style={{width: "75%", margin: "10px auto", borderRadius: "10px"}}
+                      >
+                          <h1>Comments</h1>
+                          <Divider/>
+                          <Meta
+                              avatar={<Avatar src={featured_image}/>}
+                              title={this.state.LoggedUser.name}
+                          />
 
-                      <Response info={this.state}/>
+                          <Response info={this.state}/>
+                      </Card>
+                      <p>
+                          {this.state.gotComments.map(comment => (
+                              <Showcomments key={comment.id} comment={comment}/>
+                          ))}
+                      </p>
                   </Card>
-                  <p>
-                      {this.state.gotComments.map(comment => (
-                          <Showcomments key={comment.id} comment={comment}/>
-                      ))}
-                  </p>
               </App>
           );
 
