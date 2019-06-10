@@ -30,12 +30,8 @@ exports.update = async (req, res ) => {
             });
         }
 
-        console.log("initial story claps", s.claps);
-        console.log("initial no of claps of user", userClaps.count );
-        console.log("final no of claps of user", req.body.count );
         const clapCount =  s.claps + ( req.body.count - userClaps.count );
 
-        console.log( " clapCount",  clapCount );
         const story = await Story.query().patchAndFetchById(req.params.story, {
             claps: clapCount
         });

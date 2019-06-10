@@ -22,7 +22,7 @@ class Showcomments extends Component {
 
     console.log(this.props.comment);
     return (
-      <Card style={{ width: "75%", margin: "10px auto", borderRadius: "10px" }}>
+      <Card style={{ width: "75%", marginTop:"20px", marginLeft: "20vw", borderRadius: "10px" }}>
         <Meta
           avatar={
             user && user.photo ? (
@@ -31,7 +31,7 @@ class Showcomments extends Component {
               <Avatar style={{ backgroundColor: "#f56a00" }} icon="user" />
             )
           }
-          title={this.state.user.name}
+          title={this.state.user && this.state.user.name}
         />
         <h6>{moment(created_at).fromNow()}</h6>
         <Divider />

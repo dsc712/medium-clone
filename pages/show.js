@@ -5,7 +5,7 @@ import App from "../components/layouts/App";
 const { Meta } = Card;
 import Response from "../components/Response";
 import Showcomments from "../components/ShowComments";
-import {Card, Icon, Affix, Row, Col, Avatar, Divider } from "antd";
+import {Card, Icon, Affix, Row, Col, Avatar, Divider, notification } from "antd";
 import moment from "moment";
 import ReactHTMLParser from "react-html-parser";
 import dynamic from 'next/dynamic';
@@ -64,9 +64,9 @@ class Show extends Component {
             console.log( this.state );
             this.count = this.state.count;
         });
-        //
-        // this.findBookmark();
-        // this.getResponse(id);
+
+        this.findBookmark();
+        this.getResponse(id);
     }
 
 
@@ -116,9 +116,8 @@ class Show extends Component {
 
   findBookmark = async () => {
     try {
-      await axios.get("/book/" + this.state.data.id).then(res => {
+      await axios.get("/book/" + this.props.router.query.id).then(res => {
         console.log(res);
-
         if (res.data.total > 0) {
           this.setState({ isBookmarked: true });
         }
@@ -168,7 +167,7 @@ class Show extends Component {
                   <Card>
                       <Row>
                           <Col span={1}>
-                              <Affix offsetTop={150}>
+                              <Affix  offsetTop={150}>
                                   <div style={{
                                       height: "70vh",
                                       fontSize: "24px",
@@ -196,7 +195,7 @@ class Show extends Component {
                                       </div>
                                       <Divider/>
                                       <Icon type="book" size="large"
-                                            theme={this.isBookmarked }
+                                            theme={this.getBookTheme() }
                                             onClick={this.changeBookmark}
                                             style={{color: '#000'}}/>
                                       <Icon size="large" type="share-alt"/>
@@ -240,7 +239,7 @@ class Show extends Component {
                   </Card>
                   <Card>
                       <Card
-                          style={{width: "75%", margin: "10px auto", borderRadius: "10px"}}
+                          style={{width: "75%", borderRadius: "10px", marginLeft: "20vw"}}
                       >
                           <h1>Comments</h1>
                           <Divider/>
@@ -253,7 +252,7 @@ class Show extends Component {
                       </Card>
                       <p>
                           {this.state.gotComments.map(comment => (
-                              <Showcomments key={comment.id} comment={comment}/>
+                              <Showcomments style= {{ marginLeft: "20vw"}} key={comment.id} comment={comment}/>
                           ))}
                       </p>
                   </Card>

@@ -23,8 +23,11 @@ exports.getMyBookList = async (req, res) => {
 exports.find = async (req, res) => {
     try {
         const userObj = {...req.user[0].toJSON()};
-        const data = await Bookmark.query().where('article_id', req.params.articleid).andWhere({user_id: userObj.id});
+        const data = await Bookmark.query()
+            .where({ article_id: req.params.articleid })
+            .andWhere({user_id: userObj.id});
 
+        console.log("bookmark",data);
         return res.send({
             data,
             total: data.length,
