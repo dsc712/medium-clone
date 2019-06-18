@@ -16,7 +16,7 @@ import 'draft-js/dist/Draft.css'
 
 
 
-axios.defaults.baseURL = process.env.API_HOST || 'http://127.0.0.1:3001/api/';
+axios.defaults.baseURL = process.env.HOST+':3001/api' || 'http://127.0.0.1:3001/api/';
 
 axios.interceptors.request.use(
     function (config) {

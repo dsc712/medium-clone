@@ -13,7 +13,11 @@ app.prepare()
         routes(server, app);
         server.listen(config.port, (err) => {
             if (err) throw err;
-            console.log('> Web is ready on http://localhost:' + config.port);
+            if(process.env.HOST){
+                console.log('> Web is ready on '+ process.env.HOST+ ':' + config.port);
+            }else {
+                console.log('> Web is ready on http://localhost:' + config.port);
+            }
         })
     })
     .catch((ex) => {

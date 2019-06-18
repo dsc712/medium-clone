@@ -17,5 +17,9 @@ app.use('/api', routes);
 
 app.listen(config.apiPort, '0.0.0.0', (err) => {
     if (err) throw err
-    console.log('> Api is ready on http://localhost:' + config.apiPort);
+    if(process.env.HOST) {
+        console.log('> Api is ready on ' + process.env.HOST + ':' + config.apiPort);
+    }else {
+        console.log('> Api is ready on http://localhost:' + config.apiPort);
+    }
 });
