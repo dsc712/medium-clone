@@ -8,6 +8,7 @@ import axios from "axios";
 const { Header, Content, Footer } = Layout;
 import Loading from "./Loading.jsx";
 import "./app.css";
+import 'draft-js/dist/Draft.css'
 
 let isAuthenticated = false;
 
