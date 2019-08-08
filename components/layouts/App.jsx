@@ -26,7 +26,7 @@ class App extends Component {
   };
 
   menu = () => (
-    <Menu>
+    <Menu position="top" style={{  width: "150%" }}>
       <Menu.Item
         key="1"
         onClick={e => this.props.router.push("/settings/account")}
